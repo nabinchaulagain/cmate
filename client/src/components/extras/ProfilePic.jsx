@@ -4,15 +4,7 @@ const ProfilePic = props => {
   const picRef = useRef(null);
   // handler for whenever clicked on page
   const handlePageClick = event => {
-    if (event.target === picRef.current) {
-      if (isOpen) {
-        setOpen(false);
-      } else {
-        setOpen(true);
-      }
-      console.log("clicked inside", isOpen);
-    } else {
-      console.log("clicked outside");
+    if (event.target !== picRef.current) {
       if (!isOpen) {
         setOpen(false);
       }
@@ -28,7 +20,16 @@ const ProfilePic = props => {
   }, []);
   return (
     <div>
-      <img src={props.imgSrc} alt="sd" width="42" height="42" ref={picRef} />
+      <img
+        src={props.imgSrc}
+        alt="sd"
+        width="42"
+        height="42"
+        ref={picRef}
+        onClick={() => {
+          setOpen(!isOpen);
+        }}
+      />
       {isOpen &&
         props.dropDownItems.map(dropdownItem => (
           <li key={Math.random()}>{dropdownItem}</li>
