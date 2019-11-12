@@ -7,4 +7,8 @@ const getAuthStatus = (req, res) => {
   res.status(401).send("Not logged in");
 };
 
-module.exports = { getAuthStatus };
+const logout = (req, res) => {
+  req.logout();
+  res.redirect("http://localhost:3000");
+};
+module.exports = { getAuthStatus, logout };

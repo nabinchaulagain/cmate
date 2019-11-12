@@ -1,0 +1,20 @@
+.navbar {
+  background: #12c4a1 !important;
+  padding: 10px;
+}
+.navbar-brand {
+  color: #4d0105 !important;
+}
+.nav-link {
+  color: #4d0105 !important;
+  font-size: 115%;
+}
+.nav-link:hover,
+.navbar-brand:hover {
+  color: #08fff7 !important;
+  text-shadow: 0 0 green;
+}
+#profile-img {
+  border-radius: 100%;
+  cursor: pointer;
+}
