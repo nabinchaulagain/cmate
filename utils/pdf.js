@@ -78,7 +78,6 @@ const extractQuestionPaper = rawText => {
           }
         });
       }
-      questionPaper[sectionName] = {};
       //get first and last question in the section
       const firstQnInPage = (index - 1) * 25 + 1;
       const lastQnInPaper = firstQnInPage + 24;
@@ -145,7 +144,10 @@ const extractQuestionPaper = rawText => {
         }
       });
       //add to questions property of appropriate property(section name) of question paper
-      questionPaper[sectionName].questions = { ...questionsWithOptions };
+      questionPaper.questions = {
+        ...questionPaper.questions,
+        ...questionsWithOptions
+      };
     }
   });
   return questionPaper;
