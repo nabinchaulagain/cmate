@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-import { Navbar as BSNavbar, Nav, NavDropdown } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Navbar as BSNavbar, Nav } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import ProfilePic from "./extras/ProfilePic";
+import { updateAuthStatus } from "../actions/auth";
+import { TiSocialGooglePlus } from "react-icons/ti";
 const Navbar = props => {
-  const [showProfile, setShowProfile] = useState(false);
+  const dispatch = useDispatch();
+  const authState = useSelector(state => {
+    return state.auth;
+  });
+  useEffect(() => {
+    dispatch(updateAuthStatus());
+  }, [dispatch]);
   return (
     <BSNavbar
       collapseOnSelect
-      expand="lg"
+      expand="md"
       bg="dark"
       variant="dark"
       className="navbar"
@@ -20,17 +29,31 @@ const Navbar = props => {
           <Nav.Link href="">Quizzes</Nav.Link>
           <Nav.Link href="">Result</Nav.Link>
         </Nav>
-        <Nav className="navbar-right">
-          {props.authData && (
-            <ProfilePic
-              imgSrc={props.authData.profilePic}
-              dropDownItems={["hello", "sorajk"]}
-            />
-          )}
-        </Nav>
+        <Nav className="navbar-right">{renderAuth(authState)}</Nav>
       </BSNavbar.Collapse>
     </BSNavbar>
   );
+};
+const renderAuth = authState => {
+  if (authState.isLoggedIn === "TBD") {
+    return "Loading  .....";
+  }
+  if (authState.isLoggedIn === true) {
+    return (
+      <ProfilePic
+        imgSrc={authState.user.profilePic}
+        email={authState.user.email}
+        username={authState.user.name}
+        isAdmin={authState.user.isAdmin}
+      />
+    );
+  } else {
+    return (
+      <a href="/api/auth/login" className="btn btn-danger text-light">
+        <TiSocialGooglePlus size="28" /> Login with Google
+      </a>
+    );
+  }
 };
 
 export default Navbar;

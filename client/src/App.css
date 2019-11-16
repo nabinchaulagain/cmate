@@ -1,3 +1,6 @@
+body {
+  overflow-x: hidden;
+}
 .navbar {
   background: #12c4a1 !important;
   padding: 10px;
@@ -17,4 +20,36 @@
 #profile-img {
   border-radius: 100%;
   cursor: pointer;
+}
+#profile-dropdown {
+  width: auto;
+  padding: 0 1%;
+  text-align: center;
+  background: #d5ebd7;
+  border-radius: 5px;
+  z-index: 10000;
+}
+
+#profile-dropdown a,
+#profile-dropdown > li {
+  color: black;
+}
+#profile-dropdown > li {
+  margin-bottom: 2px;
+  margin-top: 6px;
+}
+
+.form-field-error {
+  color: red;
+  font-size: 60%;
+  /* margin-top: -32px; */
+}
+
+@media only screen and (max-width: 767px) {
+  #profile-dropdown {
+    /* top: 150px !important; */
+    width: 100%;
+    margin: auto;
+    position: inherit !important;
+  }
 }

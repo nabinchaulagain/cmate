@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
+import { Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./Navbar";
+import history from "../history";
 import "../App.css";
+import AdminPanel from "./admin/AdminPanel";
+import AddPaper from "./admin/AddPaper";
 const App = () => {
-  const [authData, setAuthData] = useState({});
-  useEffect(() => {
-    (async () => {
-      const authStatus = await axios.get("/api/auth/getAuthStatus");
-      setAuthData(authStatus.data);
-    })();
-  }, []);
   return (
     <div>
-      <Navbar authData={authData} cc={<h1>Hello Siraj</h1>} />
-      <h1>Hello</h1>
-      <a href="/api/auth/login">Login</a>
-      <a href="/api/auth/logout">Logout</a>
+      <Navbar />
+      <Router history={history}>
+        <Switch>
+          <Route path="/" component={() => <h1>Home component</h1>} exact />
+          <Route path="/admin" component={AdminPanel} exact />
+          <Route path="/admin/uploadPaper" component={AddPaper} />
+        </Switch>
+      </Router>
     </div>
   );
 };

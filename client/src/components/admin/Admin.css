@@ -1,0 +1,85 @@
+#sidebar-list {
+  list-style: none;
+}
+#sidebar-list li {
+  margin: 20px 0;
+}
+#sidebar-list a {
+  color: black;
+  font-size: 140%;
+  text-decoration: none;
+}
+#sidebar-list :hover {
+  color: #89faba;
+}
+.checkbox {
+  font-size: 130%;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.checked {
+  color: #fc0307;
+  text-shadow: 0 0 10px #03fc52;
+}
+.unchecked {
+  color: white;
+  opacity: 0.7;
+}
+.checkbox-label {
+  margin-bottom: 7px;
+}
+input[type="text"],
+textarea {
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.7) !important;
+  background: inherit !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+input[type="file"] {
+  display: block;
+}
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+input[type="text"]:focus,
+textarea:focus {
+  box-shadow: none !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 1) !important;
+  background: inherit !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+.questionNumButton {
+  width: 30px;
+  height: 30px;
+  font-size: 60%;
+  border-color: grey;
+  background: grey;
+  color: white;
+  text-align: center;
+}
+.questionNumButton:focus {
+  outline: none;
+}
+.questionNumButtonCompleted {
+  background: #2bf04c;
+  border-color: #2bf04c;
+  color: black;
+}
+.questionNumButtonIncomplete {
+  background: red;
+  border-color: red;
+  color: black;
+}
+@media only screen and (max-width: 998px) {
+  #sidebar-list a {
+    font-size: 110%;
+  }
+}
+
+@media only screen and (max-width: 467px) {
+  #sidebar-list a {
+    font-size: 90%;
+  }
+}
