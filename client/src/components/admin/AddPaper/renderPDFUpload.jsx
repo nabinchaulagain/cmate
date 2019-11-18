@@ -46,6 +46,7 @@ const handleQuestionPDFSubmit = async (event, setQuestions, questions) => {
     const responseQuestions = response.data.questions;
     const newQuestions = { ...questions };
     for (let i = 1; i <= 100; i++) {
+      //update each question by overriding existing values(could be empty objects)
       newQuestions[i] = { ...newQuestions[i], ...responseQuestions[i] };
     }
     setQuestions(newQuestions);
@@ -63,6 +64,7 @@ const handleAnswerPDFSubmit = async (event, setQuestions, questions) => {
       if (newQuestions[i] === "missing") {
         newQuestions[i] = { options: {}, correctOption: answers[i] };
       }
+      //update each question by overriding existing values(could be empty objects)
       newQuestions[i] = { ...newQuestions[i], correctOption: answers[i] };
     }
     setQuestions(newQuestions);

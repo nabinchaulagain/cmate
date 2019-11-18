@@ -22,7 +22,7 @@ const AddPaper = () => {
         <h4>Questions</h4>
         {renderQuestionNumsDisplayer(setQuestionNum, questions)}
       </div>
-      {//find appropriate question form
+      {//find appropriate question form component based on what is being selected out of the 100 forms
       allQuestionForms(
         questions,
         addQuestion,
@@ -51,6 +51,7 @@ const AddPaper = () => {
   );
 };
 
+//function for inital state of questions
 const getquestionsObj = () => {
   const questions = {};
   for (let i = 1; i <= 100; i++) {

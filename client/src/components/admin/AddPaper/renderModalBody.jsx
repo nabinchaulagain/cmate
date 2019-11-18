@@ -78,7 +78,6 @@ const saveQuestionPaper = async (event, questions) => {
   formData.append("questions", JSON.stringify(questionsToSend));
   formData.append("title", input.value);
   const res = await axios.post("/api/admin/savePaper", formData);
-  console.log(res.data);
 };
 
 export default renderModalBody;

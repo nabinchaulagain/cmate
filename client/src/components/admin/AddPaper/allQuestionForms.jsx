@@ -8,6 +8,7 @@ const allQuestionForms = (
 ) => {
   const comps = [];
   for (let qn = 1; qn <= 100; qn++) {
+    //push a different question form component to the array 100 times for 100 questions
     comps.push(
       <QuestionForm
         questionNum={qn}
