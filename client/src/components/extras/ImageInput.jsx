@@ -6,7 +6,6 @@ const ImageInputField = props => {
       <input
         type="file"
         onChange={ev => {
-          console.log(ev.target.files);
           setUploadedImg(ev.target.files[0]);
           props.setImageInState(ev.target.files[0]);
         }}

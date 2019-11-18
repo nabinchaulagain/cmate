@@ -15,7 +15,6 @@ const uploadPaper = async (req, res) => {
     //get json format of question paper and send it
     const qp = extractQuestionPaper(rawText);
     res.json(qp);
-    fs.writeFile("./goa.json", JSON.stringify(qp), err => console.log(err));
   } else {
     res.status(400).send("question paper(pdf) must be sent");
   }
@@ -35,13 +34,35 @@ const uploadAnswer = async (req, res) => {
 const savePaper = async (req, res) => {
   try {
     if (!req.body.title) {
-      return res.status(400).send("Title is required");
+      return res.status(400).send("Title Is needed");
     }
-    if (!req.body.questionPaper) {
-      return res.status(400).send("Question Paper is required");
+    if (!req.body.questions) {
+      return res.status(400).send("Questions Are needed");
     }
     const questionPaper = new QuestionPaper({ title: req.body.title });
     const savedPaper = await questionPaper.save();
+    const recievedPaper = JSON.parse(req.body.questions);
+    const questionPaperObj = {};
+    const imagesInQuestionPaper = [];
+    req.files.forEach(file => {
+      //get qn
+      const questionNum = file.fieldname.split(".")[1];
+      const fileName = file.filename;
+      imagesInQuestionPaper.push({ fileName, questionNum });
+    });
+    for (let i = 1; i <= 100; i++) {
+      const imageInQn = imagesInQuestionPaper.find(
+        image => parseInt(image.questionNum) === i
+      );
+      if (imageInQn) {
+        questionPaperObj[i] = {
+          ...recievedPaper[i],
+          image: imageInQn.fileName
+        };
+        continue;
+      }
+      questionPaperObj[i] = recievedPaper[i];
+    }
     fs.writeFile(
       path.join(
         process.cwd(),
@@ -49,11 +70,12 @@ const savePaper = async (req, res) => {
         "questionPapers",
         `${savedPaper._id}.json`
       ),
-      JSON.stringify(req.body.questionPaper),
+      JSON.stringify(questionPaperObj),
       err => {}
     );
-    res.status(200).send("done");
+    res.status(200).send(questionPaperObj);
   } catch (err) {
+    console.log(err);
     res.status(500).send("Server Error");
   }
 };

@@ -17,7 +17,9 @@ app.use(
     keys: secrets.COOKIE_KEYS
   })
 );
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use(configuredPassport.initialize());
 app.use(configuredPassport.session());
 app.use("/api/admin", isAuthenticated, isAdmin, adminRoutes);

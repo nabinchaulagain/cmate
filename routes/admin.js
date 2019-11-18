@@ -5,7 +5,7 @@ const {
   saveAnswer,
   savePaper
 } = require("../controllers/admin");
-const upload = require("../middlewares/upload");
+const { upload, imageUpload } = require("../middlewares/upload");
 
 // POST => /admin/uploadPaper
 router.post("/uploadPaper", upload.single("questionPaper"), uploadPaper);
@@ -14,7 +14,7 @@ router.post("/uploadPaper", upload.single("questionPaper"), uploadPaper);
 router.post("/uploadAnswer", upload.single("answerSheet"), uploadAnswer);
 
 //POST => /admin/savePaper
-router.post("/savePaper", savePaper);
+router.post("/savePaper", imageUpload.any(), savePaper);
 
 //POST => /admin/saveAnswer
 router.post("/saveAnswer/:id", saveAnswer);

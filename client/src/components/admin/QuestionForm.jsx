@@ -6,7 +6,6 @@ const QuestionForm = props => {
   if (question === "missing") {
     question = { options: {} };
   }
-
   return (
     <form
       encType="multipart/form-data"
@@ -39,7 +38,8 @@ const handleSubmit = (setErrors, event, addQuestion, goToNext) => {
   const c = form.querySelector('input[name="c"]').value;
   const d = form.querySelector('input[name="d"]').value;
   let direction = form.querySelector("input[name='direction']");
-  const formValues = { question, options: { a, b, c, d } };
+  const correctOption = form.querySelector("input[name='correctOption']").value;
+  const formValues = { question, options: { a, b, c, d }, correctOption };
   if (direction) {
     formValues.direction = direction.value;
   }
@@ -62,6 +62,9 @@ export const validate = formValues => {
       errors[opt] = `Option ${opt.toUpperCase()} is required`;
     }
   });
+  if (!formValues.correctOption) {
+    errors.correctOption = "Correct option is required";
+  }
   return errors;
 };
 export default QuestionForm;

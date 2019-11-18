@@ -8,7 +8,6 @@ const ProfilePic = props => {
     //add page click handler on mount
     document.addEventListener("click", event => {
       if (event.target !== picRef.current) {
-        console.log("outside click");
         if (!isOpen) {
           setOpen(false);
         }

@@ -98,6 +98,14 @@ const renderOptions = (initialValues, errors) => {
         value={initialValues.options.d}
         error={errors.d}
       />
+      <Field
+        type="text"
+        className="col-3 form-control mt-2 mx-auto"
+        placeholder="Correct Option (a,b,c,d)"
+        name="correctOption"
+        value={initialValues.correctOption}
+        error={errors.correctOption}
+      />
     </div>
   );
 };

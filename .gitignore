@@ -1,4 +1,4 @@
 /node_modules
 /config/secrets.js
 /resources
-/client/.vscode
+.vscode
