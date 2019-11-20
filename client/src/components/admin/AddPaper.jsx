@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import QuestionForm, { validate } from "./QuestionForm";
 import Modal from "../extras/Modal";
-import axios from "axios";
 import allQuestionForms from "./AddPaper/allQuestionForms";
-import renderModalBody from "./AddPaper/renderModalBody";
-import renderPDFUpload from "./AddPaper/renderPDFUpload";
+import ModalBody from "./AddPaper/ModalBody";
+import PDFUpload from "./AddPaper/PDFUpload";
 import renderQuestionNumsDisplayer from "./AddPaper/renderQuestionNumsDisplayer";
+import renderLoading from "../extras/renderLoading";
 const AddPaper = () => {
   const [questionNum, setQuestionNum] = useState(1);
   const [questions, setQuestions] = useState(getquestionsObj({}));
+  const [isLoading, setIsLoading] = useState(false);
   const addQuestion = question => {
     setQuestions({
       ...questions,
@@ -18,19 +18,25 @@ const AddPaper = () => {
   return (
     <React.Fragment>
       <div className="col-md-9 col-lg-7 mx-auto mt-2">
-        {renderPDFUpload(setQuestions, questions)}
+        <PDFUpload
+          setQuestions={setQuestions}
+          questions={questions}
+          setIsLoading={setIsLoading}
+        />
         <h4>Questions</h4>
         {renderQuestionNumsDisplayer(setQuestionNum, questions)}
       </div>
+      {isLoading && renderLoading(isLoading)}
       {//find appropriate question form component based on what is being selected out of the 100 forms
-      allQuestionForms(
-        questions,
-        addQuestion,
-        setQuestionNum,
-        setQuestions
-      ).find(questionForm => {
-        return parseInt(questionForm.key) === questionNum;
-      })}
+      !isLoading &&
+        allQuestionForms(
+          questions,
+          addQuestion,
+          setQuestionNum,
+          setQuestions
+        ).find(questionForm => {
+          return parseInt(questionForm.key) === questionNum;
+        })}
       <div className="text-center m-2">
         <Modal
           openButton={{
@@ -38,7 +44,7 @@ const AddPaper = () => {
             text: "Save Question Paper"
           }}
           modalHeading="Are you sure you want to save the paper?"
-          modalBody={renderModalBody(questions)}
+          modalBody={<ModalBody questions={questions} />}
         />
       </div>
       <div className="alert alert-info col-7 mx-auto mt-4 text-center ">

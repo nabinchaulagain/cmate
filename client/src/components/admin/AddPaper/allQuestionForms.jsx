@@ -1,5 +1,5 @@
 import React from "react";
-import QuestionForm from "../QuestionForm";
+import QuestionForm from "./QuestionForm";
 const allQuestionForms = (
   questions,
   addQuestion,

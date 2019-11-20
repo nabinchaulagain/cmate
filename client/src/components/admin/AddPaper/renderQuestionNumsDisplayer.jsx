@@ -1,5 +1,5 @@
 import React from "react";
-import { validate } from "../QuestionForm";
+import { validate } from "./QuestionForm";
 const renderQuestionNumsDisplayer = (setQuestionNum, questions) => {
   const elems = [];
   for (let i = 1; i <= 100; i++) {

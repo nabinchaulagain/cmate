@@ -40,9 +40,9 @@ body {
 }
 
 .form-field-error {
+  content: "red";
   color: red;
   font-size: 60%;
-  /* margin-top: -32px; */
 }
 
 @media only screen and (max-width: 767px) {

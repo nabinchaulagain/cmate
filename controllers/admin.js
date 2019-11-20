@@ -9,25 +9,33 @@ const path = require("path");
 const { assignAnswers } = require("../utils/q&a");
 // controller for POST=> /admin/uploadPaper
 const uploadPaper = async (req, res) => {
-  if (req.file) {
-    //get raw text
-    const rawText = await getPDFText(req.file.buffer);
-    //get json format of question paper and send it
-    const qp = extractQuestionPaper(rawText);
-    res.json(qp);
-  } else {
-    res.status(400).send("question paper(pdf) must be sent");
+  try {
+    if (req.file) {
+      //get raw text
+      const rawText = await getPDFText(req.file.buffer);
+      //get json format of question paper and send it
+      const qp = extractQuestionPaper(rawText);
+      res.json(qp);
+    } else {
+      res.status(400).send("question paper(pdf) must be sent");
+    }
+  } catch (err) {
+    res.status(500).send("Incorrect format ");
   }
 };
 
 //Controller for POST=> /admin/uploadAnswer
 const uploadAnswer = async (req, res) => {
-  if (!req.file) {
-    return res.status(400).send("answer paper(pdf) must be sent");
+  try {
+    if (!req.file) {
+      return res.status(400).send("answer paper(pdf) must be sent");
+    }
+    const rawText = await getPDFText(req.file.buffer);
+    const answerSheet = extractAnswerSheet(rawText);
+    res.json(answerSheet);
+  } catch (err) {
+    res.status(500).send("Incorrect format ");
   }
-  const rawText = await getPDFText(req.file.buffer);
-  const answerSheet = extractAnswerSheet(rawText);
-  res.json(answerSheet);
 };
 
 //controller for POST => /admin/savePaper
