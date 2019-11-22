@@ -44,6 +44,16 @@ body {
   color: red;
   font-size: 60%;
 }
+#flash-message {
+  position: fixed;
+  bottom: 6%;
+  right: 1%;
+  padding: 5px 3%;
+  font-size: 120%;
+  color: white;
+  background: #09002b;
+  z-index: 1001;
+}
 
 @media only screen and (max-width: 767px) {
   #profile-dropdown {

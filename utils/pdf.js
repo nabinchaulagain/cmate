@@ -39,10 +39,6 @@ const extractQuestionPaper = rawText => {
   //loop through sections
   sections.forEach((section, index) => {
     if (index !== 0) {
-      //get section name with regex
-      const sectionName = /Section:\s\w{1,4}\s?-?\s?(\w+\s\w+)/.exec(
-        section
-      )[1];
       let directions = [];
       let detailedDirections = [];
       const questions = {};
@@ -73,7 +69,7 @@ const extractQuestionPaper = rawText => {
           } else {
             detailedDirections.push({
               from: directionStartQuestionNum,
-              detail: "missing"
+              detail: " "
             });
           }
         });
@@ -102,7 +98,7 @@ const extractQuestionPaper = rawText => {
           )[1];
         } catch (err) {
           // if not found using regex
-          questions[i] = "missing";
+          questions[i] = "";
         } finally {
           questions[i] = questions[i].replace(
             /(Directions?\s?[:;]?\s?.{20,}|-+Page.+)/s,
@@ -140,7 +136,7 @@ const extractQuestionPaper = rawText => {
             d: formatString(opts[4])
           };
         } catch (err) {
-          questionsWithOptions[questionNum] = "missing";
+          questionsWithOptions[questionNum] = {};
         }
       });
       //add to questions property of appropriate property(section name) of question paper

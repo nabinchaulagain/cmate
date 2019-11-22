@@ -7,6 +7,7 @@ const fs = require("fs");
 const QuestionPaper = require("../models/QuestionPaper");
 const path = require("path");
 const { assignAnswers } = require("../utils/q&a");
+const validateQuestion = require("../validators/validateQuestion");
 // controller for POST=> /admin/uploadPaper
 const uploadPaper = async (req, res) => {
   try {
@@ -48,20 +49,26 @@ const savePaper = async (req, res) => {
       return res.status(400).send("Questions Are needed");
     }
     const questionPaper = new QuestionPaper({ title: req.body.title });
-    const savedPaper = await questionPaper.save();
+    fs.writeFile("./ss.json", req.body.questions, err => {});
     const recievedPaper = JSON.parse(req.body.questions);
     const questionPaperObj = {};
     const imagesInQuestionPaper = [];
+    let incompleteQuestions = 0;
     req.files.forEach(file => {
-      //get qn
+      //get qn of images
       const questionNum = file.fieldname.split(".")[1];
       const fileName = file.filename;
       imagesInQuestionPaper.push({ fileName, questionNum });
     });
     for (let i = 1; i <= 100; i++) {
+      //loop through questions
+      if (!validateQuestion(recievedPaper[i])) {
+        incompleteQuestions++;
+      }
       const imageInQn = imagesInQuestionPaper.find(
         image => parseInt(image.questionNum) === i
       );
+      // add image if image is in question
       if (imageInQn) {
         questionPaperObj[i] = {
           ...recievedPaper[i],
@@ -69,8 +76,21 @@ const savePaper = async (req, res) => {
         };
         continue;
       }
+      if (recievedPaper[i].question === "missing") {
+        console.log("missing paper");
+        questionPaperObj[i] = {
+          options: recievedPaper[i].options,
+          direction: recievedPaper[i].direction,
+          question: "",
+          correctOption: recievedPaper[i].correctOption
+        };
+        continue;
+      }
       questionPaperObj[i] = recievedPaper[i];
     }
+    questionPaper.incompletes = incompleteQuestions;
+    questionPaper.isCompleted = incompleteQuestions === 0;
+    const savedPaper = await questionPaper.save();
     fs.writeFile(
       path.join(
         process.cwd(),

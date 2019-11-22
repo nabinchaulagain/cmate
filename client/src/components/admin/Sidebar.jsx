@@ -4,7 +4,10 @@ import { IoIosPaper } from "react-icons/io";
 import { FaUsers } from "react-icons/fa";
 const Sidebar = () => {
   return (
-    <div className="col-3" style={{ height: "100vh", background: "#a2a6a3" }}>
+    <div
+      className="col-md-3 col-5 "
+      style={{ height: "100vh", background: "#a2a6a3" }}
+    >
       <ul id="sidebar-list">
         <li>
           <Link to="/admin/uploadPaper">

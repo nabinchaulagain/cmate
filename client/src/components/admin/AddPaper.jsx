@@ -5,6 +5,7 @@ import ModalBody from "./AddPaper/ModalBody";
 import PDFUpload from "./AddPaper/PDFUpload";
 import renderQuestionNumsDisplayer from "./AddPaper/renderQuestionNumsDisplayer";
 import renderLoading from "../extras/renderLoading";
+import { useDispatch } from "react-redux";
 const AddPaper = () => {
   const [questionNum, setQuestionNum] = useState(1);
   const [questions, setQuestions] = useState(getquestionsObj({}));
