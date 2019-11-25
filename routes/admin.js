@@ -3,7 +3,8 @@ const {
   uploadPaper,
   uploadAnswer,
   saveAnswer,
-  savePaper
+  savePaper,
+  getPapers
 } = require("../controllers/admin");
 const { upload, imageUpload } = require("../middlewares/upload");
 
@@ -18,4 +19,7 @@ router.post("/savePaper", imageUpload.any(), savePaper);
 
 //POST => /admin/saveAnswer
 router.post("/saveAnswer/:id", saveAnswer);
+
+//GET => /admin/getPapers
+router.get("/getPapers",getPapers)
 module.exports = router;

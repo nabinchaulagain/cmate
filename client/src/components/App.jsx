@@ -15,7 +15,7 @@ const App = props => {
     history.listen(() => {
       dispatch(removeFlashMessage());
     });
-  }, []);
+  }, [dispatch]);
   const flashMessage = useSelector(state => {
     return state.flashMessage;
   });

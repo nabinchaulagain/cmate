@@ -18,8 +18,7 @@
   cursor: pointer;
 }
 .checked {
-  color: #fc0307;
-  text-shadow: 0 0 10px #03fc52;
+  color: #03fc52;
 }
 .unchecked {
   color: white;
@@ -83,6 +82,9 @@ textarea:focus {
 }
 .form-field {
   display: inline;
+}
+a.card:hover{
+  text-decoration: none;
 }
 @media only screen and (max-width: 998px) {
   #sidebar-list a {

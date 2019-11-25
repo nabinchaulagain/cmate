@@ -148,4 +148,10 @@ const saveAnswer = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-module.exports = { uploadPaper, uploadAnswer, savePaper, saveAnswer };
+
+//Controller for GET => /admin/getPapers
+const getPapers= async (req,res)=>{
+  const papers= await QuestionPaper.find();
+  res.json(papers);
+}
+module.exports = { uploadPaper, uploadAnswer, savePaper, saveAnswer,getPapers };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 const ImageInputField = props => {
   const [uploadedImg, setUploadedImg] = useState(props.initialImage);
   return (
-    <div>
+    <div className="mt-2">
       <input
         type="file"
         onChange={ev => {

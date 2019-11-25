@@ -25,7 +25,7 @@ const FieldsComp = props => {
       <Field
         type="text"
         name="question"
-        className="form-control form-field"
+        className="form-control mt-2 form-field"
         placeholder="Question"
         value={props.initialValues.question}
         error={props.errors.question}

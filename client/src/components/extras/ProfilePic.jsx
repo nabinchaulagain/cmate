@@ -13,7 +13,7 @@ const ProfilePic = props => {
         }
       }
     });
-  }, []);
+  }, [isOpen]);
   return (
     <div>
       <img
