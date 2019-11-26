@@ -1,17 +1,18 @@
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./Admin.css";
 import axios from "axios";
-import Modal from "../extras/Modal"
+import Modal from "../extras/Modal";
+import { Link } from "react-router-dom";
 const AdminHome = () => {
-  const [questions,setQuestions] = useState("unset");
-  useEffect(()=>{
-    const getAndSetQuestions=async()=>{
-      const response = await axios.get("/api/admin/getPapers");
+  const [questions, setQuestions] = useState("unset");
+  useEffect(() => {
+    const getAndSetQuestions = async () => {
+      const response = await axios.get("/api/getPapers");
       setQuestions(response.data);
-    }
-    getAndSetQuestions()
-  },[])
+    };
+    getAndSetQuestions();
+  }, []);
   return (
     <div className="row">
       <Sidebar />
@@ -23,37 +24,53 @@ const AdminHome = () => {
   );
 };
 
-const renderQuestionPaperList =(questions)=>{
-  if(questions.length !==0 && questions !== "unset"){
+const renderQuestionPaperList = questions => {
+  if (questions.length !== 0 && questions !== "unset") {
     return (
       <ul>
-        {questions.map((question)=><QuestionPaperCard question={question} key={question._id}/>)}
+        {questions.map(question => (
+          <QuestionPaperCard question={question} key={question._id} />
+        ))}
       </ul>
-    )
+    );
   }
-}
-const QuestionPaperCard= ({question})=>{
-  const noBtnRef= useRef(null);
-  return(
-    <div className="card bg-light p-2 mr-4 mb-2 text-dark" to={`/admin/editPaper/${question._id}`}>
+};
+const QuestionPaperCard = ({ question }) => {
+  return (
+    <div
+      className="card bg-light p-2 mr-4 mb-2 text-dark"
+      to={`/admin/editPaper/${question._id}`}
+    >
       <h5>{question.title}</h5>
       <small>Created at {new Date(question.created_at).toLocaleString()}</small>
-      {!question.isCompleted && <strong className="text-danger"> {question.incompletes} incompete questions</strong>}
+      {!question.isCompleted && (
+        <strong className="text-danger">
+          {" "}
+          {question.incompletes} incompete questions
+        </strong>
+      )}
       <div className="text-center">
-        <Modal 
-        openButton={{className:"btn btn-sm btn-danger",text:"Delete Question paper"}} 
-        modalHeading={`Delete ${question.title}?`} 
-        modalBody={
-          <div>
-            <button className="btn btn-md btn-success">Yes</button>
-            <button className="btn btn-md btn-danger ml-2" ref={noBtnRef}>No</button>
-          </div>
-        }
-        closeElemRef={noBtnRef}
+        <Link
+          to={`/admin/editPaper/${question._id}`}
+          className="btn btn-success btn-sm mr-3"
+        >
+          Edit Question Paper
+        </Link>
+        <Modal
+          openButton={{
+            className: "btn btn-sm btn-danger",
+            text: "Delete Question paper"
+          }}
+          modalHeading={`Delete ${question.title}?`}
+          modalBody={
+            <div>
+              <button className="btn btn-lg btn-success">Yes</button>
+              <button className="btn btn-lg btn-danger ml-2">No</button>
+            </div>
+          }
         />
       </div>
     </div>
-  )
-}
-
+  );
+};
 export default AdminHome;

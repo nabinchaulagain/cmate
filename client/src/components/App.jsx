@@ -8,8 +8,9 @@ import AdminPanel from "./admin/AdminPanel";
 import AddPaper from "./admin/AddPaper";
 import FlashMessage from "./extras/FlashMessage";
 import { removeFlashMessage } from "../actions/flashMessage";
+import EditPaper from "./admin/EditPaper";
 import history from "../history";
-const App = props => {
+const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     history.listen(() => {
@@ -29,6 +30,7 @@ const App = props => {
         <Route path="/" component={() => <h1>Home component</h1>} exact />
         <Route path="/admin" component={AdminPanel} exact />
         <Route path="/admin/uploadPaper" component={AddPaper} />
+        <Route path="/admin/editPaper/:id" component={EditPaper} />
       </Switch>
     </div>
   );

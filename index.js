@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
 const isAdmin = require("./middlewares/isAdmin");
 const isAuthenticated = require("./middlewares/isAuthenticated");
+const paperRoutes = require("./routes/papers");
 require("./models/User");
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(configuredPassport.initialize());
 app.use(configuredPassport.session());
 app.use("/api/admin", isAuthenticated, isAdmin, adminRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api", paperRoutes);
 
 mongoose
   .connect("mongodb+srv://nabin1:pword@cluster0-eumyn.mongodb.net/cmate", {

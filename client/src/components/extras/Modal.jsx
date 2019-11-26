@@ -32,10 +32,9 @@ const attachClose = (modalBodyRef,closeModal)=>{
   if(modalBodyRef.current){
     const modalBody = modalBodyRef.current;
     try{
-      modalBody.querySelector("button.btn.btn-danger.btn-md").addEventListener("click",closeModal);
+      modalBody.querySelector("button.btn.btn-danger").addEventListener("click",closeModal);
     }
     catch(err){
-
     }
   }
   

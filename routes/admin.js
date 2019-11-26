@@ -2,9 +2,9 @@ const router = require("express").Router();
 const {
   uploadPaper,
   uploadAnswer,
-  saveAnswer,
   savePaper,
-  getPapers
+  deletePaper,
+  editPaper
 } = require("../controllers/admin");
 const { upload, imageUpload } = require("../middlewares/upload");
 
@@ -17,9 +17,10 @@ router.post("/uploadAnswer", upload.single("answerSheet"), uploadAnswer);
 //POST => /admin/savePaper
 router.post("/savePaper", imageUpload.any(), savePaper);
 
-//POST => /admin/saveAnswer
-router.post("/saveAnswer/:id", saveAnswer);
+//DELETE => /admin/deletePaper
+router.delete("/deletePaper", deletePaper);
 
-//GET => /admin/getPapers
-router.get("/getPapers",getPapers)
+//PATCH => /admin/editPaper
+router.patch("/editPaper", upload.any(), editPaper);
+
 module.exports = router;
