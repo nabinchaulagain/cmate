@@ -52,9 +52,12 @@ body {
   font-size: 120%;
   color: white;
   background: #09002b;
-  z-index: 1001;
+  z-index: 10000000001;
 }
 
+.btn:focus {
+  box-shadow: none !important;
+}
 @media only screen and (max-width: 767px) {
   #profile-dropdown {
     /* top: 150px !important; */

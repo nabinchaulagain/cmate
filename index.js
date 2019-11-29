@@ -26,7 +26,7 @@ app.use(configuredPassport.session());
 app.use("/api/admin", isAuthenticated, isAdmin, adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", paperRoutes);
-
+app.use("/images", express.static("resources/images"));
 mongoose
   .connect("mongodb+srv://nabin1:pword@cluster0-eumyn.mongodb.net/cmate", {
     useUnifiedTopology: true,

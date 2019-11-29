@@ -7,6 +7,7 @@ const ImageInputField = props => {
         type="file"
         onChange={ev => {
           setUploadedImg(ev.target.files[0]);
+          console.log("we hjere");
           props.setImageInState(ev.target.files[0]);
         }}
         accept=".jpg,.jpeg,.png"
@@ -14,7 +15,11 @@ const ImageInputField = props => {
       {uploadedImg && (
         <div className="col-4 mx-auto mt-2">
           <img
-            src={URL.createObjectURL(uploadedImg)}
+            src={
+              uploadedImg instanceof Blob
+                ? URL.createObjectURL(uploadedImg)
+                : `/images/${uploadedImg}`
+            }
             alt="uploadedImage"
             width="300"
           />

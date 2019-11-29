@@ -21,6 +21,6 @@ router.post("/savePaper", imageUpload.any(), savePaper);
 router.delete("/deletePaper", deletePaper);
 
 //PATCH => /admin/editPaper
-router.patch("/editPaper", upload.any(), editPaper);
+router.patch("/editPaper", imageUpload.any(), editPaper);
 
 module.exports = router;

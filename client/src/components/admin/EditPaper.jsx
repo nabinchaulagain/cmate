@@ -15,7 +15,6 @@ const EditPaper = props => {
         );
         setIntialValues(response.data);
       } catch (err) {
-        console.log(err);
         window.location.href = "/admin";
       }
     };

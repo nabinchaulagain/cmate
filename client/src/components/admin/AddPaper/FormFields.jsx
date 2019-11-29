@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageInput from "../../extras/ImageInput";
 import Field from "../../extras/Field";
 import Checkbox from "../../extras/Checkbox";
@@ -7,6 +7,11 @@ const FieldsComp = props => {
   const [hasDirection, setHasDirection] = useState(
     Boolean(props.initialValues.direction)
   );
+  useEffect(() => {
+    if (!hasImage) {
+      props.setImageInState(null);
+    }
+  }, [hasImage]);
   //checkboxes for options for directions and image
   //actual Fields Component
   return (

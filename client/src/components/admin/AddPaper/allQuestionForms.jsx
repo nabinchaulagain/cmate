@@ -19,7 +19,7 @@ const allQuestionForms = (
           setQuestionNum(qn + 1);
         }}
         setImageInState={image => {
-          setQuestions({ ...questions, [qn]: { image, ...questions[qn] } });
+          setQuestions({ ...questions, [qn]: { ...questions[qn], image } });
         }}
       />
     );

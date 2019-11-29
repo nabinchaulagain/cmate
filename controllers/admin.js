@@ -3,7 +3,11 @@ const {
   getPDFText,
   extractAnswerSheet
 } = require("../utils/pdf");
-const { getFinalQuestionsObj } = require("../utils/q&a");
+const {
+  getFinalQuestionsObj,
+  deleteUpdatedPicsInPaper,
+  deleteAllImagesInPaper
+} = require("../utils/q&a");
 const fs = require("fs");
 const QuestionPaper = require("../models/QuestionPaper");
 const path = require("path");
@@ -79,7 +83,7 @@ const deletePaper = async (req, res) => {
   if (!req.body.id) {
     return res.status(400).send("Id is needed");
   }
-  const paper = await QuestionPaper.findById(req.query.id);
+  const paper = await QuestionPaper.findById(req.body.id);
   if (!paper) {
     return res.status(404).send("Paper not found");
   }
@@ -90,6 +94,7 @@ const deletePaper = async (req, res) => {
     `${paper._id}.json`
   );
   await paper.remove();
+  deleteAllImagesInPaper(filePath);
   fs.unlink(filePath, err => {});
   res.status(200).send("Done");
 };
@@ -122,8 +127,9 @@ const editPaper = async (req, res) => {
       "questionPapers",
       `${paper._id}.json`
     );
+    deleteUpdatedPicsInPaper(filePath, questionPaperObj);
     fs.writeFile(filePath, JSON.stringify(questionPaperObj), err => {});
-    res.send("done");
+    res.status(200).send("done");
   } catch (err) {
     console.log(err);
     res.status(500).send("Server error");

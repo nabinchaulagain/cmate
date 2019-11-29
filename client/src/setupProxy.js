@@ -7,4 +7,11 @@ module.exports = function(app) {
       changeOrigin: true
     })
   );
+  app.use(
+    "/images/",
+    proxy({
+      target: "http://localhost:4000/",
+      changeOrigin: true
+    })
+  );
 };

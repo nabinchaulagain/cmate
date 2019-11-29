@@ -58,8 +58,7 @@ const saveEditPaper = async (questions, id, dispatch) => {
   const formData = new FormData();
   for (let i = 1; i <= 100; i++) {
     questionsToSend[i] = { ...questions[i] };
-    if (questions[i].image) {
-      // questionImages.push(questions[i].image);
+    if (questions[i].image instanceof Blob) {
       formData.append("question." + i, questions[i].image);
       delete questionsToSend[i].image;
     }

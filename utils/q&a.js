@@ -1,4 +1,6 @@
 const validateQuestion = require("../validators/validateQuestion");
+const fs = require("fs");
+const path = require("path");
 const assignAnswers = (questions, answers) => {
   for (section in questions) {
     // i refers to question num [1-100]
@@ -52,8 +54,42 @@ const getFinalQuestionsObj = (files, recievedPaper) => {
     }
     questionPaperObj[i] = recievedPaper[i];
   }
-  console.log(incompleteQuestions);
   const isCompleted = incompleteQuestions === 0;
   return { questionPaperObj, isCompleted, incompleteQuestions };
 };
-module.exports = { assignAnswers, getFinalQuestionsObj };
+
+const deleteUpdatedPicsInPaper = (fileName, newFileData) => {
+  const oldFileData = JSON.parse(fs.readFileSync(fileName).toString());
+  for (let i = 1; i <= 100; i++) {
+    if (oldFileData[i].image !== newFileData[i].image && oldFileData[i].image) {
+      const imageLocation = path.join(
+        process.cwd(),
+        "resources",
+        "images",
+        oldFileData[i].image
+      );
+      fs.unlink(imageLocation, () => {});
+    }
+  }
+};
+
+const deleteAllImagesInPaper = fileName => {
+  const fileData = JSON.parse(fs.readFileSync(fileName).toString());
+  for (let i = 1; i <= 100; i++) {
+    if (fileData[i].image) {
+      const imageLocation = path.join(
+        process.cwd(),
+        "resources",
+        "images",
+        fileData[i].image
+      );
+      fs.unlink(imageLocation, () => {});
+    }
+  }
+};
+module.exports = {
+  assignAnswers,
+  getFinalQuestionsObj,
+  deleteUpdatedPicsInPaper,
+  deleteAllImagesInPaper
+};
