@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth");
 const isAdmin = require("./middlewares/isAdmin");
 const isAuthenticated = require("./middlewares/isAuthenticated");
 const paperRoutes = require("./routes/papers");
+const resultRoutes = require("./routes/results");
 require("./models/User");
 
 const app = express();
@@ -26,7 +27,10 @@ app.use(configuredPassport.session());
 app.use("/api/admin", isAuthenticated, isAdmin, adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", paperRoutes);
+app.use("/api/results", resultRoutes);
+
 app.use("/images", express.static("resources/images"));
+
 mongoose
   .connect("mongodb+srv://nabin1:pword@cluster0-eumyn.mongodb.net/cmate", {
     useUnifiedTopology: true,

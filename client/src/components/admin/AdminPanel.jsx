@@ -60,7 +60,10 @@ const renderPagination = (currentPage, questions, setCurrentPage) => {
       </button>
     );
   }
-  return <div className="text-center">{elems}</div>;
+  if(elems.length>1){
+    return <div className="text-center">{elems}</div>;
+  }
+  
 };
 const renderQuestionPaperList = (questions, setReloadPage) => {
   if (questions.length !== 0 && questions !== "unset") {

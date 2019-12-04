@@ -1,4 +1,6 @@
 /node_modules
 /config/secrets.js
-/resources
+/resources/images/*
+/resources/questionPapers/*
+/resources/result.json
 .vscode

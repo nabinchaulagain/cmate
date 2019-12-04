@@ -1,0 +1,29 @@
+.menu {
+  background: #f0f0f0;
+  font-size: 120%;
+  display: inline-block;
+  position: fixed;
+  list-style: none;
+  left: -30px;
+  right: 0;
+  color: black;
+  padding: 0;
+  margin-top: -5px;
+  border-radius: 2px;
+  z-index: 1000;
+}
+.menu > li {
+  cursor: pointer;
+}
+.menu > li:hover {
+  background: #b0acac;
+}
+
+.result-card {
+  font-size: 120%;
+  list-style: none;
+}
+
+input:focus {
+  box-shadow: none !important;
+}
