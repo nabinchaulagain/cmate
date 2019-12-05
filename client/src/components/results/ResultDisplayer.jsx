@@ -25,7 +25,7 @@ const ResultDisplayer = () => {
         </thead>
         <tbody>
           {filterResults(searchResults, pageNum).map(searchResult => (
-            <tr>
+            <tr key={searchResult.rollNo}>
               <td>{searchResult.rank}</td>
               <td>{searchResult.name}</td>
               <td>{searchResult.rollNo}</td>
@@ -57,6 +57,7 @@ const renderPagination = (pageNum, items, setPageNum) => {
       <button
         className={`btn btn-${i === pageNum ? "success" : "secondary"} mr-2`}
         onClick={() => setPageNum(i)}
+        key={i}
       >
         {i}
       </button>

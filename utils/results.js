@@ -18,12 +18,12 @@ const searchStudents = (searchQuery, max = null, infoScope = "name") => {
   }
   for (singleStudRes of resultData) {
     const studentName = singleStudRes.name;
-    //2nd priority search results if student name starts with search keyword
+    //2nd priority search results if student name contains search keyword
     if (
       studentName.toLowerCase().indexOf(searchQuery) !== 0 &&
       studentName.toLowerCase().indexOf(searchQuery) !== -1
     ) {
-      searchResults.push(infoScope === "name" ? studentName : singleStudRes);
+      searchResults.push(infoScope === "name" ? {name:studentName,rollNo:singleStudRes.rollNo} : singleStudRes);
       if (max && searchResults.length === max) {
         return searchResults;
       }
