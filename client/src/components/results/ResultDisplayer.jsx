@@ -1,10 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ResultContext } from "./ResultContext";
+import {
+  FaFastBackward,
+  FaFastForward,
+  FaStepForward,
+  FaBackward
+} from "react-icons/fa";
 const ResultDisplayer = () => {
   const [pageNum, setPageNum] = useState(1);
   const {
     state: { searchResults }
   } = useContext(ResultContext);
+  useEffect(() => {
+    setPageNum(1);
+  }, [searchResults]);
   if (!searchResults) {
     return <div />;
   }
@@ -13,7 +22,7 @@ const ResultDisplayer = () => {
   }
   return (
     <React.Fragment>
-      <table className="table table-xl table-secondary table-striped table-bordered col-8 mx-auto">
+      <table className="table table-lg table-secondary table-striped table-bordered col-10 mx-auto">
         <thead>
           <tr>
             <th>Rank</th>
@@ -55,7 +64,9 @@ const renderPagination = (pageNum, items, setPageNum) => {
   for (let i = 1; i <= lastPageNum; i++) {
     buttons.push(
       <button
-        className={`btn btn-${i === pageNum ? "success" : "secondary"} mr-2`}
+        className={`btn btn-${
+          i === pageNum ? "primary" : "secondary"
+        } mr-2 mb-2`}
         onClick={() => setPageNum(i)}
         key={i}
       >
@@ -63,6 +74,76 @@ const renderPagination = (pageNum, items, setPageNum) => {
       </button>
     );
   }
-  return <div className="text-center col-8 mx-auto">{buttons}</div>;
+  const moveBtnClasses = "btn btn-secondary mr-2 mb-2";
+  const forwardClasses = `${moveBtnClasses} ${
+    pageNum === lastPageNum ? "disabled" : ""
+  }`;
+  const backwardClasses = `${moveBtnClasses} ${
+    pageNum === 1 ? "disabled" : ""
+  }`;
+  return (
+    <div className="text-center col-8 mx-auto">
+      <BackwardButtons
+        backwardClasses={backwardClasses}
+        setPageNum={setPageNum}
+        pageNum={pageNum}
+      />
+      {buttons.slice(pageNum - 1, pageNum + 2)}
+      <ForwardButtons
+        forwardClasses={forwardClasses}
+        setPageNum={setPageNum}
+        pageNum={pageNum}
+        lastPageNum={lastPageNum}
+      />
+    </div>
+  );
+};
+
+const BackwardButtons = ({ backwardClasses, setPageNum, pageNum }) => {
+  return (
+    <React.Fragment>
+      <button className={backwardClasses} onClick={() => setPageNum(1)}>
+        <FaFastBackward />
+      </button>
+      <button
+        className={backwardClasses}
+        onClick={() => {
+          if (pageNum !== 1) {
+            setPageNum(pageNum - 1);
+          }
+        }}
+      >
+        <FaBackward />
+      </button>
+    </React.Fragment>
+  );
+};
+
+const ForwardButtons = ({
+  forwardClasses,
+  setPageNum,
+  pageNum,
+  lastPageNum
+}) => {
+  return (
+    <React.Fragment>
+      <button
+        className={forwardClasses}
+        onClick={() => {
+          if (pageNum !== lastPageNum) {
+            setPageNum(pageNum + 1);
+          }
+        }}
+      >
+        <FaStepForward />
+      </button>
+      <button
+        className={forwardClasses}
+        onClick={() => setPageNum(lastPageNum)}
+      >
+        <FaFastForward />
+      </button>
+    </React.Fragment>
+  );
 };
 export default ResultDisplayer;
