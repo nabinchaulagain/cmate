@@ -20,14 +20,26 @@ const assignAnswers = (questions, answers) => {
 const getFinalQuestionsObj = (files, recievedPaper) => {
   const questionPaperObj = {};
   const imagesInQuestionPaper = [];
+  const directionImagesInQuestionPaper = [];
   let incompleteQuestions = 0;
   files.forEach(file => {
     //get qn of images
-    const questionNum = file.fieldname.split(".")[1];
-    const fileName = file.filename;
-    imagesInQuestionPaper.push({ fileName, questionNum });
+    console.log(file.fieldname);
+    if (file.fieldname.includes("directionImage")) {
+      const [, questionNum, endingNum] = file.fieldname.split(".");
+      directionImagesInQuestionPaper.push({
+        questionNum,
+        endingNum,
+        fileName: file.filename
+      });
+    } else {
+      const questionNum = file.fieldname.split(".")[1];
+      const fileName = file.filename;
+      imagesInQuestionPaper.push({ fileName, questionNum });
+    }
   });
   for (let i = 1; i <= 100; i++) {
+    const singleQuestion = { ...recievedPaper[i] };
     //loop through questions
     if (!validateQuestion(recievedPaper[i])) {
       incompleteQuestions++;
@@ -35,24 +47,23 @@ const getFinalQuestionsObj = (files, recievedPaper) => {
     const imageInQn = imagesInQuestionPaper.find(
       image => parseInt(image.questionNum) === i
     );
+    const directionImageInQn = directionImagesInQuestionPaper.find(
+      directionImage => parseInt(directionImage.questionNum) === i
+    );
     // add image if image is in question
     if (imageInQn) {
-      questionPaperObj[i] = {
-        ...recievedPaper[i],
-        image: imageInQn.fileName
-      };
-      continue;
+      singleQuestion.image = imageInQn.fileName;
     }
-    if (recievedPaper[i].question === "missing") {
-      questionPaperObj[i] = {
-        options: recievedPaper[i].options,
-        direction: recievedPaper[i].direction,
-        question: "",
-        correctOption: recievedPaper[i].correctOption
+    if (directionImageInQn) {
+      singleQuestion.directionImage = {
+        url: directionImageInQn.fileName,
+        ending: parseInt(directionImageInQn.endingNum)
       };
-      continue;
     }
-    questionPaperObj[i] = recievedPaper[i];
+    if (recievedPaper[i].question === "noneed") {
+      singleQuestion.question = "";
+    }
+    questionPaperObj[i] = singleQuestion;
   }
   const isCompleted = incompleteQuestions === 0;
   return { questionPaperObj, isCompleted, incompleteQuestions };
@@ -70,6 +81,19 @@ const deleteUpdatedPicsInPaper = (fileName, newFileData) => {
       );
       fs.unlink(imageLocation, () => {});
     }
+    if (
+      oldFileData[i].directionImage &&
+      (!newFileData[i].directionImage ||
+        oldFileData[i].directionImage.url !== newFileData[i].directionImage.url)
+    ) {
+      const imageLocation = path.join(
+        process.cwd(),
+        "resources",
+        "images",
+        oldFileData[i].directionImage.url
+      );
+      fs.unlink(imageLocation, () => {});
+    }
   }
 };
 
@@ -82,6 +106,15 @@ const deleteAllImagesInPaper = fileName => {
         "resources",
         "images",
         fileData[i].image
+      );
+      fs.unlink(imageLocation, () => {});
+    }
+    if (fileData[i].directionImage) {
+      const imageLocation = path.join(
+        process.cwd(),
+        "resources",
+        "images",
+        fileData[i].directionImage.url
       );
       fs.unlink(imageLocation, () => {});
     }

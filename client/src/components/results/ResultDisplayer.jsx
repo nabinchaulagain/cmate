@@ -4,7 +4,7 @@ import {
   FaFastBackward,
   FaFastForward,
   FaStepForward,
-  FaBackward
+  FaStepBackward
 } from "react-icons/fa";
 const ResultDisplayer = () => {
   const [pageNum, setPageNum] = useState(1);
@@ -113,7 +113,7 @@ const BackwardButtons = ({ backwardClasses, setPageNum, pageNum }) => {
           }
         }}
       >
-        <FaBackward />
+        <FaStepBackward />
       </button>
     </React.Fragment>
   );

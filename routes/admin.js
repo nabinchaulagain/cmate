@@ -4,7 +4,9 @@ const {
   uploadAnswer,
   savePaper,
   deletePaper,
-  editPaper
+  editPaper,
+  getPapers,
+  getPaper
 } = require("../controllers/admin");
 const { upload, imageUpload } = require("../middlewares/upload");
 
@@ -22,5 +24,11 @@ router.delete("/deletePaper", deletePaper);
 
 //PATCH => /admin/editPaper
 router.patch("/editPaper", imageUpload.any(), editPaper);
+
+//GET => /admin/getPapers
+router.get("/getPapers", getPapers);
+
+//GET => /admin/getPaper/{id}
+router.get("/getPaper/:id", getPaper);
 
 module.exports = router;

@@ -1,17 +1,22 @@
 const QuestionPaper = require("../models/QuestionPaper");
 const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose");
 //Controller for GET => /getPapers
 const getPapers = async (req, res) => {
-  const papers = await QuestionPaper.find();
+  const papers = await QuestionPaper.find({ isComplete: true });
   res.json(papers);
 };
 
+// Controller for GET=> /getPaper/:id
 const getPaper = async (req, res) => {
   if (!req.params.id) {
     return res.status(400).send("Id is needed");
   }
-  const paper = await QuestionPaper.findById(req.params.id);
+  const paper = await QuestionPaper.findOne({
+    _id: mongoose.Types.ObjectId(req.params.id),
+    isComplete: true
+  });
   if (!paper) {
     return res.status(404).send("Not found");
   }

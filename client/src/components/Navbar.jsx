@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProfilePic from "./extras/ProfilePic";
 import { updateAuthStatus } from "../actions/auth";
 import { TiSocialGooglePlus } from "react-icons/ti";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 const Navbar = props => {
   const dispatch = useDispatch();
   const authState = useSelector(state => {
@@ -27,8 +27,12 @@ const Navbar = props => {
       <BSNavbar.Toggle aria-controls="responsive-navbar-nav" />
       <BSNavbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="">Quizzes</Nav.Link>
-          <Link className="nav-link" to="/results">Result</Link>
+          <Link className="nav-link" to="/quizzes">
+            Quizzes
+          </Link>
+          <Link className="nav-link" to="/results">
+            Result
+          </Link>
         </Nav>
         <Nav className="navbar-right">{renderAuth(authState)}</Nav>
       </BSNavbar.Collapse>

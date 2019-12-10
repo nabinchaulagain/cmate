@@ -12,7 +12,6 @@ const PaperForm = ({ initialQuestions, type, id, dispatch }) => {
   const [questionNum, setQuestionNum] = useState(1);
   const [questions, setQuestions] = useState(initialQuestions);
   const [isLoading, setIsLoading] = useState(false);
-  //render submit component based on whether it is the add or edit form
   const addQuestion = question => {
     setQuestions({
       ...questions,
@@ -62,9 +61,22 @@ const saveEditPaper = async (questions, id, dispatch) => {
       formData.append("question." + i, questions[i].image);
       delete questionsToSend[i].image;
     }
+    if (
+      questions[i].directionImage &&
+      questions[i].directionImage.url instanceof Blob
+    ) {
+      formData.append(
+        "directionImage." + i + "." + questions[i].directionImage.ending,
+        questions[i].directionImage.url
+      );
+      delete questionsToSend[i].directionImage;
+    }
   }
   formData.append("questions", JSON.stringify(questionsToSend));
   formData.append("id", id);
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
   await axios.patch("/api/admin/editPaper", formData);
   history.push("/admin");
   flashMessage(dispatch, "Question Paper was Edited");

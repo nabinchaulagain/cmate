@@ -10,14 +10,22 @@ import renderLoading from "../extras/renderLoading";
 const AdminHome = () => {
   const [questions, setQuestions] = useState("unset");
   const [currentPage, setCurrentPage] = useState(1);
-  const [reloadPage, setReloadPage] = useState(Math.random());
   useEffect(() => {
+    let isSubscribed = true;
     const getAndSetQuestions = async () => {
-      const response = await axios.get("/api/getPapers");
-      setQuestions(response.data);
+      const response = await axios.get("/api/admin/getPapers");
+      if (isSubscribed) {
+        setQuestions(response.data);
+      }
     };
     getAndSetQuestions();
-  }, [reloadPage]);
+    return () => (isSubscribed = false);
+  }, []);
+  useEffect(() => {
+    if ((currentPage - 1) * 4 >= questions.length) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [questions.length]);
   return (
     <div className="row">
       <Sidebar />
@@ -31,7 +39,7 @@ const AdminHome = () => {
                 index + 1 <= currentPage * 4 &&
                 index + 1 > (currentPage - 1) * 4
             ),
-            setReloadPage
+            setQuestions
           )}
         {Array.isArray(questions) &&
           renderPagination(
@@ -60,27 +68,27 @@ const renderPagination = (currentPage, questions, setCurrentPage) => {
       </button>
     );
   }
-  if(elems.length>1){
+  if (elems.length > 1) {
     return <div className="text-center">{elems}</div>;
   }
-  
 };
-const renderQuestionPaperList = (questions, setReloadPage) => {
+const renderQuestionPaperList = (questions, setQuestions) => {
   if (questions.length !== 0 && questions !== "unset") {
     return (
       <ul>
         {questions.map(question => (
           <QuestionPaperCard
             question={question}
+            questions={questions}
+            setQuestions={setQuestions}
             key={question._id}
-            setReloadPage={setReloadPage}
           />
         ))}
       </ul>
     );
   }
 };
-const QuestionPaperCard = ({ question, setReloadPage }) => {
+const QuestionPaperCard = ({ question, questions, setQuestions }) => {
   const dispatch = useDispatch();
   return (
     <div
@@ -112,12 +120,15 @@ const QuestionPaperCard = ({ question, setReloadPage }) => {
               <button
                 className="btn btn-lg btn-success"
                 onClick={async () => {
-                  await axios.delete("/api/admin/deletePaper", {
-                    data: {
-                      id: question._id
+                  const response = await axios.delete(
+                    "/api/admin/deletePaper",
+                    {
+                      data: {
+                        id: question._id
+                      }
                     }
-                  });
-                  setReloadPage(Math.random);
+                  );
+                  setQuestions(response.data);
                   setTimeout(
                     () => flashMessage(dispatch, "Question paper deleted"),
                     500

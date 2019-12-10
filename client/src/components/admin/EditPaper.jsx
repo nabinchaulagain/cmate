@@ -11,7 +11,7 @@ const EditPaper = props => {
     const getAndSetInitialState = async () => {
       try {
         const response = await axios.get(
-          `/api/getPaper/${props.match.params.id}`
+          `/api/admin/getPaper/${props.match.params.id}`
         );
         setIntialValues(response.data);
       } catch (err) {

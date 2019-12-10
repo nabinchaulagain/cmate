@@ -7,6 +7,9 @@ const FieldsComp = props => {
   const [hasDirection, setHasDirection] = useState(
     Boolean(props.initialValues.direction)
   );
+  const [hasDirectionImage, setHasDirectionImage] = useState(
+    Boolean(props.initialValues.directionImage)
+  );
   useEffect(() => {
     if (!hasImage) {
       props.setImageInState(null);
@@ -16,16 +19,46 @@ const FieldsComp = props => {
   //actual Fields Component
   return (
     <div className="form-group">
-      {renderCheckboxes(setHasImage, hasImage, setHasDirection, hasDirection)}
+      {renderCheckboxes(
+        setHasImage,
+        hasImage,
+        setHasDirection,
+        hasDirection,
+        hasDirectionImage,
+        setHasDirectionImage
+      )}
       {hasDirection && (
-        <Field
-          type="text"
-          name="direction"
-          placeholder="Direction Detail"
-          className="form-control mt-2 form-field"
-          value={props.initialValues.direction}
-          error={props.errors.direction}
-        />
+        <React.Fragment>
+          <Field
+            type="text"
+            name="direction"
+            placeholder="Direction Detail"
+            className="form-control mt-2 form-field"
+            value={
+              props.initialValues.direction &&
+              props.initialValues.direction.text
+            }
+            error={props.errors.direction}
+          />
+          <div className="ml-0 text-left mt-1">
+            <label
+              style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: "80%" }}
+            >
+              Direction valid upto question number:
+            </label>
+            <input
+              type="number"
+              className="form-control col-md-2 col-3 ml-2 form-field "
+              name="direction_upto"
+              min="1"
+              defaultValue={
+                props.initialValues.direction &&
+                props.initialValues.direction.ending
+              }
+              max="100"
+            />
+          </div>
+        </React.Fragment>
       )}
       <Field
         type="text"
@@ -39,7 +72,39 @@ const FieldsComp = props => {
         <ImageInput
           setImageInState={props.setImageInState}
           initialImage={props.initialValues.image}
+          name="question_image"
+          label="Question Image"
         />
+      )}
+      {hasDirectionImage && (
+        <React.Fragment>
+          <ImageInput
+            label="Direction Image"
+            name="direction_image"
+            initialImage={
+              props.initialValues.directionImage &&
+              props.initialValues.directionImage.url
+            }
+          />
+          <div className="ml-0 text-left mt-1">
+            <label
+              style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: "80%" }}
+            >
+              Direction Image valid upto question number:
+            </label>
+            <input
+              type="number"
+              className="form-control col-md-2 col-3 ml-2 form-field "
+              name="direction_image_upto"
+              min="1"
+              defaultValue={
+                props.initialValues.directionImage &&
+                props.initialValues.directionImage.ending
+              }
+              max="100"
+            />
+          </div>
+        </React.Fragment>
       )}
       {renderOptions(props.initialValues, props.errors)}
     </div>
@@ -50,7 +115,9 @@ const renderCheckboxes = (
   setHasImage,
   hasImage,
   setHasDirection,
-  hasDirection
+  hasDirection,
+  hasDirectionImage,
+  setHasDirectionImage
 ) => {
   return (
     <div className="text-center m-2">
@@ -63,7 +130,12 @@ const renderCheckboxes = (
         onClick={() => setHasDirection(!hasDirection)}
         checked={hasDirection}
       ></Checkbox>
-      <label>Has Direction</label>
+      <label className="mr-3">Has Direction</label>
+      <Checkbox
+        onClick={() => setHasDirectionImage(!hasDirectionImage)}
+        checked={hasDirectionImage}
+      ></Checkbox>
+      <label>Has Direction Image</label>
     </div>
   );
 };

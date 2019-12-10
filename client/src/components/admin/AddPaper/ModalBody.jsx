@@ -82,9 +82,15 @@ const saveQuestionPaper = async (event, questions, setError, dispatch) => {
   for (let i = 1; i <= 100; i++) {
     questionsToSend[i] = { ...questions[i] };
     if (questions[i].image) {
-      // questionImages.push(questions[i].image);
       formData.append("question." + i, questions[i].image);
       delete questionsToSend[i].image;
+    }
+    if (questions[i].directionImage) {
+      formData.append(
+        "directionImage." + i + "." + questions[i].directionImage.ending,
+        questions[i].directionImage.url
+      );
+      delete questionsToSend[i].directionImage;
     }
   }
   formData.append("questions", JSON.stringify(questionsToSend));

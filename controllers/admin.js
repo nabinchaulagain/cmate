@@ -96,7 +96,7 @@ const deletePaper = async (req, res) => {
   await paper.remove();
   deleteAllImagesInPaper(filePath);
   fs.unlink(filePath, err => {});
-  res.status(200).send("Done");
+  res.status(200).send(await QuestionPaper.find());
 };
 
 //controller for PATCH => /admin/editPaper
@@ -136,10 +136,40 @@ const editPaper = async (req, res) => {
   }
 };
 
+//GET => /admin/getPapers
+const getPapers = async (req, res) => {
+  const papers = await QuestionPaper.find();
+  res.json(papers);
+};
+
+//GET => admin/getPaper/{id}
+const getPaper = async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Id is needed");
+  }
+  const paper = await QuestionPaper.findById(req.params.id);
+  if (!paper) {
+    return res.status(404).send("Not found");
+  }
+  const filePath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    `${paper._id}.json`
+  );
+  if (fs.existsSync(filePath)) {
+    const fileData = fs.readFileSync(filePath).toString();
+    return res.json(JSON.parse(fileData));
+  }
+  res.status(404).send("not found");
+};
+
 module.exports = {
   uploadPaper,
   uploadAnswer,
   savePaper,
   deletePaper,
-  editPaper
+  editPaper,
+  getPaper,
+  getPapers
 };

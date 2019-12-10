@@ -28,7 +28,8 @@
   margin-bottom: 7px;
 }
 input[type="text"],
-textarea {
+textarea,
+input[type="number"] {
   border: none !important;
   border-radius: 0 !important;
   border-bottom: 2px solid rgba(255, 255, 255, 0.7) !important;
@@ -39,11 +40,13 @@ input[type="file"] {
   display: block;
 }
 input[type="text"]::placeholder,
-textarea::placeholder {
+textarea::placeholder,
+input[type="number"]::placeholder {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 input[type="text"]:focus,
-textarea:focus {
+textarea:focus,
+input[type="number"] {
   box-shadow: none !important;
   border-bottom: 2px solid rgba(255, 255, 255, 1) !important;
   background: inherit !important;
@@ -83,7 +86,7 @@ textarea:focus {
 .form-field {
   display: inline;
 }
-a.card:hover{
+a.card:hover {
   text-decoration: none;
 }
 @media only screen and (max-width: 998px) {

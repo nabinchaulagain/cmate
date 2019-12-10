@@ -1,4 +1,5 @@
 const pdf2json = require("pdf2json");
+const fs = require("fs");
 
 const {
   PDF_DECODE_CHARACTERS,
@@ -16,12 +17,14 @@ const getPDFText = buffer => {
       let fileData = parser.getRawTextContent().trim();
       //remove uneccessary brackets
       fileData = fileData.replace(/\(.{6,}\)/g, "");
+      fileData = fileData.replace(/-+.+-+/g, "");
       PDF_ENCODED_CHARACTERS.forEach((encodedChar, index) => {
         fileData = fileData.replace(
           new RegExp(encodedChar, "g"),
           PDF_DECODE_CHARACTERS[index]
         );
       });
+
       // resolve promise raw text of pdf
       resolve(fileData);
     });
@@ -44,7 +47,7 @@ const extractQuestionPaper = rawText => {
       const questions = {};
       //get directions in the section
       directions = section.match(
-        /Directions?\s?[:;]?\s?([a-z\s.,]+\d{1,2})\./gi
+        /Directions?\s?[:;]?\s?([a-z\s.,:\/';\-]+\d{1,2})\./gi
       );
       if (directions) {
         //loop through directions
@@ -117,18 +120,28 @@ const extractQuestionPaper = rawText => {
               return direction.from == questionNum;
             });
             if (startsWithDirections) {
-              questionsWithOptions[
-                questionNum
-              ].direction = detailedDirections.find(
+              const directionIndex = detailedDirections.findIndex(
                 direction => direction.from == questionNum
-              ).detail;
+              );
+              let ending = null;
+              if (detailedDirections[directionIndex + 1]) {
+                ending = detailedDirections[directionIndex + 1].from - 1;
+              }
+              questionsWithOptions[questionNum].direction = {
+                text: detailedDirections[directionIndex].detail,
+                ending: ending
+              };
             }
           }
           //get options in question(index 1-4) and question text only (index 0)
           const opts = questions[questionNum]
             .match(/(.*)a ?[).](.+)b ?[).](.+)c ?[).](.+)d ?[).](.+)\n/s)
             .filter((val, j) => j !== 0);
-          questionsWithOptions[questionNum].question = formatString(opts[0]);
+          let question = formatString(opts[0]);
+          if (!question) {
+            question = "noneed";
+          }
+          questionsWithOptions[questionNum].question = formatString(question);
           questionsWithOptions[questionNum].options = {
             a: formatString(opts[1]),
             b: formatString(opts[2]),

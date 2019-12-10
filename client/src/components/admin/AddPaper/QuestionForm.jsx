@@ -37,7 +37,12 @@ const handleSubmit = (setErrors, event, addQuestion, goToNext) => {
   const b = form.querySelector('input[name="b"]').value;
   const c = form.querySelector('input[name="c"]').value;
   const d = form.querySelector('input[name="d"]').value;
-  let direction = form.querySelector("input[name='direction']");
+  const directionImage = form.querySelector('input[name="direction_image"]');
+  const directionImageEnd = form.querySelector(
+    'input[name="direction_image_upto"]'
+  );
+  let directionText = form.querySelector("input[name='direction']");
+  const directionUpto = form.querySelector("input[name='direction_upto']");
   let correctOption;
   form.querySelectorAll("input[name='correctOption']").forEach(radioBox => {
     if (radioBox.checked) {
@@ -46,11 +51,26 @@ const handleSubmit = (setErrors, event, addQuestion, goToNext) => {
     return;
   });
   const formValues = { question, options: { a, b, c, d } };
-  if (direction) {
-    formValues.direction = direction.value;
+  if (directionText && directionUpto) {
+    formValues.direction = {
+      text: directionText.value,
+      ending: directionUpto.value
+    };
+  }
+  if (directionImage && directionImageEnd && directionImage.files[0]) {
+    formValues.directionImage = {
+      url: directionImage.files[0],
+      ending: directionImageEnd.value
+    };
   }
   if (correctOption) {
     formValues.correctOption = correctOption.value;
+  }
+  if (!directionImage) {
+    formValues.directionImage = null;
+  }
+  if (!directionText) {
+    formValues.direction = null;
   }
   const errors = validate(formValues);
   //if no errors
