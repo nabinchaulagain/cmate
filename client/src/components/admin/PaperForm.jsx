@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../extras/Modal";
 import allQuestionForms from "./AddPaper/allQuestionForms";
 import ModalBody from "./AddPaper/ModalBody";
@@ -8,6 +8,7 @@ import renderLoading from "../extras/renderLoading";
 import axios from "axios";
 import history from "../../history";
 import flashMessage from "../../utils/flashMessage";
+import { IoIosPlay, IoIosPause } from "react-icons/io";
 const PaperForm = ({ initialQuestions, type, id, dispatch }) => {
   const [questionNum, setQuestionNum] = useState(1);
   const [questions, setQuestions] = useState(initialQuestions);
@@ -20,13 +21,18 @@ const PaperForm = ({ initialQuestions, type, id, dispatch }) => {
   };
   return (
     <React.Fragment>
-      <div className="col-md-9 col-lg-7 mx-auto mt-2">
+      <div className="col-md-9 col-lg-7 col-12 mx-auto mt-2">
         <PDFUpload
           setQuestions={setQuestions}
           questions={questions}
           setIsLoading={setIsLoading}
         />
-        <h4>Questions</h4>
+        <div className=" text-right mr-4 mb-2">
+          <Player
+            setQuestionNum={setQuestionNum}
+            questionNum={questionNum}
+          ></Player>
+        </div>
         {renderQuestionNumsDisplayer(setQuestionNum, questions)}
       </div>
       {isLoading && renderLoading(isLoading)}
@@ -43,12 +49,25 @@ const PaperForm = ({ initialQuestions, type, id, dispatch }) => {
       <div className="text-center m-2">
         {renderSubmitComponent(questions, type, id, dispatch)}
       </div>
-      <div className="alert alert-info col-7 mx-auto mt-4 text-center ">
-        <small>
-          Warning: Don't change question numbers unless you're finished with
-          one. Progress is not saved for a single question
-        </small>
-      </div>
+      <ul className="alert alert-info col-7 mx-auto mt-4 text-left ">
+        <h5 className="text-center">Please read</h5>
+        <li>
+          Don't change question numbers unless you're finished with one.
+          Progress is not saved for a single question
+        </li>
+        <li>Images and direction images have to be manually added.</li>
+        <li>
+          Please check all questions after you are done.{" "}
+          <span
+            onClick={() => document.querySelector("#player").click()}
+            id="review-preview"
+          >
+            Click on review question button
+          </span>{" "}
+          to do so.
+        </li>
+        <li>Don't forget to review all directions</li>
+      </ul>
     </React.Fragment>
   );
 };
@@ -103,6 +122,41 @@ const renderSubmitComponent = (questions, type, id, dispatch) => {
         Save Paper
       </button>
     </div>
+  );
+};
+
+const Player = props => {
+  const [activeNumber, setActiveNum] = useState(props.questionNum);
+  const [isActive, setIsActive] = useState(false);
+  useEffect(() => {
+    let isSubscribed = true;
+    if (activeNumber === 100) {
+      setIsActive(false);
+    }
+    if (isActive && activeNumber !== 100) {
+      setTimeout(() => {
+        if (isSubscribed && isActive) {
+          props.setQuestionNum(activeNumber + 1);
+          setActiveNum(activeNumber + 1);
+        }
+      }, 2000);
+    }
+    return () => (isSubscribed = false);
+  }, [isActive, activeNumber]);
+  useEffect(() => {
+    setActiveNum(props.questionNum);
+  }, [props.questionNum]);
+  return (
+    <React.Fragment>
+      <button
+        id="player"
+        className="btn btn-primary ml-1 mr-1"
+        onClick={() => setIsActive(!isActive)}
+      >
+        {isActive ? <IoIosPause /> : <IoIosPlay />}
+      </button>
+      Review Question Paper
+    </React.Fragment>
   );
 };
 

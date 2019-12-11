@@ -6,7 +6,8 @@ const {
 const {
   getFinalQuestionsObj,
   deleteUpdatedPicsInPaper,
-  deleteAllImagesInPaper
+  deleteAllImagesInPaper,
+  getFinalClientPaper
 } = require("../utils/q&a");
 const fs = require("fs");
 const QuestionPaper = require("../models/QuestionPaper");
@@ -129,6 +130,15 @@ const editPaper = async (req, res) => {
     );
     deleteUpdatedPicsInPaper(filePath, questionPaperObj);
     fs.writeFile(filePath, JSON.stringify(questionPaperObj), err => {});
+    const clientPaper = getFinalClientPaper(questionPaperObj);
+    const clientFilePath = path.join(
+      process.cwd(),
+      "resources",
+      "questionPapers",
+      "client",
+      `${paper._id}.json`
+    );
+    fs.writeFile(clientFilePath, JSON.stringify(clientPaper), err => {});
     res.status(200).send("done");
   } catch (err) {
     console.log(err);

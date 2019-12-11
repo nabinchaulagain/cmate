@@ -59,22 +59,10 @@ const extractQuestionPaper = rawText => {
           ] = directionText
             .match(/Directions?\s?[:;]?\s?(.+)\n(\d{1,2})\./s)
             .filter((val, j) => j !== 0);
-          //don't add directions if it is for a diagram and paragraph
-          if (
-            !["figure", "diagram", "paragraph"].some(val =>
-              directionText.includes(val)
-            )
-          ) {
-            detailedDirections.push({
-              detail: formatString(directionDetail),
-              from: directionStartQuestionNum
-            });
-          } else {
-            detailedDirections.push({
-              from: directionStartQuestionNum,
-              detail: " "
-            });
-          }
+          detailedDirections.push({
+            detail: formatString(directionDetail),
+            from: directionStartQuestionNum
+          });
         });
       }
       //get first and last question in the section

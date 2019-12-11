@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
+import flashMessage from "../../../utils/flashMessage";
 const PDFUpload = ({ setQuestions, questions, setIsLoading }) => {
   const [error, setError] = useState(false);
+  const dispatch = useDispatch();
   return (
     <form className="text-right mb-2 form-group" encType="multipart/form-data">
       <input
@@ -16,7 +19,8 @@ const PDFUpload = ({ setQuestions, questions, setIsLoading }) => {
             setQuestions,
             questions,
             setIsLoading,
-            setError
+            setError,
+            dispatch
           )
         }
       />
@@ -38,12 +42,16 @@ const PDFUpload = ({ setQuestions, questions, setIsLoading }) => {
       />
       <label
         htmlFor="questionPaper"
-        className="btn btn-info mr-2"
+        className="btn btn-info mr-2 btn-md"
         role="button"
       >
         Upload PDF Question Paper
       </label>
-      <label htmlFor="answerSheet" className="btn btn-danger" role="button">
+      <label
+        htmlFor="answerSheet"
+        className="btn btn-danger btn-md"
+        role="button"
+      >
         Upload PDF Answer sheet
       </label>
       {error && (
@@ -65,7 +73,8 @@ const handleQuestionPDFSubmit = async (
   setQuestions,
   questions,
   setIsLoading,
-  setError
+  setError,
+  dispatch
 ) => {
   const PDF = event.target.files[0];
   const formData = new FormData();
@@ -81,6 +90,7 @@ const handleQuestionPDFSubmit = async (
     }
     setQuestions(newQuestions);
     setError(false);
+    flashMessage(dispatch, "Please review all the directions");
   } catch (err) {
     setError("Please make sure the pdf is a correct question paper");
   } finally {

@@ -9,7 +9,7 @@ const QuestionForm = props => {
   return (
     <form
       encType="multipart/form-data"
-      className="col-sm-7 mx-auto mt-2 p-3 text-center bg-dark text-light"
+      className="col-lg-6 col-md-7 col-sm-9 col-11 mx-auto mt-2 p-3 text-center bg-dark text-light"
       style={{ borderRadius: "15px" }}
       onSubmit={event => {
         event.preventDefault();
@@ -38,6 +38,7 @@ const handleSubmit = (setErrors, event, addQuestion, goToNext) => {
   const c = form.querySelector('input[name="c"]').value;
   const d = form.querySelector('input[name="d"]').value;
   const directionImage = form.querySelector('input[name="direction_image"]');
+  const directionImageSaved = form.querySelector("#direction_imagedisplay");
   const directionImageEnd = form.querySelector(
     'input[name="direction_image_upto"]'
   );
@@ -57,9 +58,16 @@ const handleSubmit = (setErrors, event, addQuestion, goToNext) => {
       ending: directionUpto.value
     };
   }
-  if (directionImage && directionImageEnd && directionImage.files[0]) {
+  if (
+    directionImage &&
+    directionImageEnd &&
+    (directionImage.files[0] || directionImageSaved) &&
+    directionImageEnd.value
+  ) {
     formValues.directionImage = {
-      url: directionImage.files[0],
+      url: directionImage.files[0]
+        ? directionImage.files[0]
+        : /.+\/([a-z0-9]+\.\w{3,4})/.exec(directionImageSaved.src)[1],
       ending: directionImageEnd.value
     };
   }

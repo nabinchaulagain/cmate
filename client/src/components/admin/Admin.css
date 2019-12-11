@@ -89,14 +89,48 @@ input[type="number"] {
 a.card:hover {
   text-decoration: none;
 }
+#review-preview {
+  cursor: pointer;
+}
+#review-preview:hover {
+  text-decoration: underline;
+}
+
 @media only screen and (max-width: 998px) {
   #sidebar-list a {
     font-size: 110%;
+  }
+  form[enctype="multipart/form-data"] * {
+    font-size: 95%;
+  }
+  form[enctype="multipart/form-data"] input[type="radio"] {
+    width: 10px;
+    height: 10px;
+  }
+  .questionNumButton {
+    font-size: 50%;
+    width: 24px;
+    height: 24px;
   }
 }
 
 @media only screen and (max-width: 467px) {
   #sidebar-list a {
     font-size: 90%;
+  }
+  form[enctype="multipart/form-data"] {
+    padding: 20px;
+  }
+  form[enctype="multipart/form-data"] * {
+    font-size: 90%;
+  }
+  form[enctype="multipart/form-data"] input[type="radio"] {
+    width: 8px;
+    height: 8px;
+  }
+  .questionNumButton {
+    font-size: 45%;
+    width: 20px;
+    height: 20px;
   }
 }

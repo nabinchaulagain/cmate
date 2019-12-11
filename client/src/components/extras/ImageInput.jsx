@@ -4,7 +4,7 @@ const ImageInputField = props => {
   return (
     <div className="mt-2">
       <div className="text-left">
-        <label htmlFor={props.name} className="btn btn-light">
+        <label htmlFor={props.name} className="btn btn-light btn-sm">
           Upload {props.label}
         </label>
       </div>
@@ -24,13 +24,14 @@ const ImageInputField = props => {
       {uploadedImg && (
         <div className="col-4 mx-auto mt-2">
           <img
+            id={props.name + "display"}
             src={
               uploadedImg instanceof Blob
                 ? URL.createObjectURL(uploadedImg)
                 : `/images/${uploadedImg}`
             }
             alt="uploadedImage"
-            width="300"
+            style={{ width: "100%" }}
           />
         </div>
       )}

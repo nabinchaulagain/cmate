@@ -24,14 +24,15 @@ const getFinalQuestionsObj = (files, recievedPaper) => {
   let incompleteQuestions = 0;
   files.forEach(file => {
     //get qn of images
-    console.log(file.fieldname);
     if (file.fieldname.includes("directionImage")) {
-      const [, questionNum, endingNum] = file.fieldname.split(".");
-      directionImagesInQuestionPaper.push({
-        questionNum,
-        endingNum,
-        fileName: file.filename
-      });
+      try {
+        const [, questionNum, endingNum] = file.fieldname.split(".");
+        directionImagesInQuestionPaper.push({
+          questionNum,
+          endingNum,
+          fileName: file.filename
+        });
+      } catch (err) {}
     } else {
       const questionNum = file.fieldname.split(".")[1];
       const fileName = file.filename;
@@ -120,9 +121,54 @@ const deleteAllImagesInPaper = fileName => {
     }
   }
 };
+
+const getFinalClientPaper = questionPaperObj => {
+  const clientPaper = {};
+  const directions = [];
+  const directionImages = [];
+  for (let i = 1; i <= 100; i++) {
+    try {
+      if (questionPaperObj[i].direction) {
+        directions.push({
+          questionNum: i,
+          text: questionPaperObj[i].direction.text,
+          ending: questionPaperObj[i].direction.ending
+        });
+      }
+      if (questionPaperObj[i].directionImage) {
+        directionImages.push({
+          questionNum: i,
+          url: questionPaperObj[i].directionImage.url,
+          ending: questionPaperObj[i].directionImage.ending
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  for (let i = 1; i <= 100; i++) {
+    const singleQuestion = { ...questionPaperObj[i] };
+    const directionInQn = directions.find(
+      direction => i >= direction.questionNum && i <= direction.ending
+    );
+    const directionImageInQn = directionImages.find(
+      directionImage =>
+        i >= directionImage.questionNum && i <= directionImage.ending
+    );
+    if (directionInQn) {
+      singleQuestion.direction = directionInQn.text;
+    }
+    if (directionImageInQn) {
+      singleQuestion.directionImage = directionImageInQn.url;
+    }
+    clientPaper[i] = singleQuestion;
+  }
+  return clientPaper;
+};
 module.exports = {
   assignAnswers,
   getFinalQuestionsObj,
   deleteUpdatedPicsInPaper,
-  deleteAllImagesInPaper
+  deleteAllImagesInPaper,
+  getFinalClientPaper
 };

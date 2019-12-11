@@ -6,11 +6,14 @@ const renderQuestionNumsDisplayer = (setQuestionNum, questions) => {
     let classes = "questionNumButton";
 
     //check if the question number is already added
-    if (questions[i] === "missing") {
+    const errors = validate(questions[i]);
+    if (
+      questions[i].direction &&
+      questions[i].direction.text &&
+      !questions[i].direction.ending
+    ) {
       classes += " questionNumButtonIncomplete";
     } else {
-      const errors = validate(questions[i]);
-
       if (Object.keys(errors).length === 0) {
         classes += " questionNumButtonCompleted";
       }

@@ -120,17 +120,17 @@ const renderCheckboxes = (
   setHasDirectionImage
 ) => {
   return (
-    <div className="text-center m-2">
+    <div className="text-center m-1">
       <Checkbox
         onClick={() => setHasImage(!hasImage)}
         checked={hasImage}
       ></Checkbox>
-      <label className="mr-3">Has Image</label>
+      <label className="mr-2">Has Image</label>
       <Checkbox
         onClick={() => setHasDirection(!hasDirection)}
         checked={hasDirection}
       ></Checkbox>
-      <label className="mr-3">Has Direction</label>
+      <label className="mr-2">Has Direction</label>
       <Checkbox
         onClick={() => setHasDirectionImage(!hasDirectionImage)}
         checked={hasDirectionImage}
