@@ -4,6 +4,7 @@ import "../quizzes.css";
 import SingleQuestion from "./SingleQuestion";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Checkbox from "../../extras/Checkbox";
+
 const Quiz = () => {
   const { store, actions } = useContext(QuizContext);
   if (!store.questionPaper || !store.title) {
