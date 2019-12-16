@@ -12,6 +12,7 @@ import { removeFlashMessage } from "../actions/flashMessage";
 import EditPaper from "./admin/EditPaper";
 import Quizzes from "./quizzes/QuizzesHome";
 import history from "../history";
+import Quiz from "./quizzes/Quiz/index";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -33,8 +34,9 @@ const App = () => {
         <Route path="/results" component={Results} exact />
         <Route path="/quizzes" component={Quizzes} />
         <Route path="/admin" component={AdminPanel} exact />
-        <Route path="/admin/uploadPaper" component={AddPaper} />
-        <Route path="/admin/editPaper/:id" component={EditPaper} />
+        <Route path="/admin/uploadPaper" component={AddPaper} exact />
+        <Route path="/admin/editPaper/:id" component={EditPaper} exact />
+        <Route path="/quiz/:id" component={Quiz} exact />
       </Switch>
     </div>
   );

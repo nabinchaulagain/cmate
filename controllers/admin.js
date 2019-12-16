@@ -18,6 +18,7 @@ const uploadPaper = async (req, res) => {
     if (req.file) {
       //get raw text
       const rawText = await getPDFText(req.file.buffer);
+      fs.writeFile("./info.txt", rawText, () => {});
       //get json format of question paper and send it
       const qp = extractQuestionPaper(rawText);
       res.json(qp);
@@ -72,6 +73,17 @@ const savePaper = async (req, res) => {
       JSON.stringify(questionPaperObj),
       err => {}
     );
+    if (isCompleted) {
+      const clientPaper = getFinalClientPaper(questionPaperObj);
+      const clientFilePath = path.join(
+        process.cwd(),
+        "resources",
+        "questionPapers",
+        "client",
+        `${savedPaper._id}.json`
+      );
+      fs.writeFile(clientFilePath, JSON.stringify(clientPaper), err => {});
+    }
     res.status(200).send("Done");
   } catch (err) {
     console.log(err);
@@ -94,10 +106,18 @@ const deletePaper = async (req, res) => {
     "questionPapers",
     `${paper._id}.json`
   );
+  const clientFilePath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    "client",
+    `${paper._id}.json`
+  );
   await paper.remove();
   deleteAllImagesInPaper(filePath);
   fs.unlink(filePath, err => {});
-  res.status(200).send(await QuestionPaper.find());
+  fs.unlink(clientFilePath, err => {});
+  res.status(200).send(await QuestionPaper.find().sort("-created_at"));
 };
 
 //controller for PATCH => /admin/editPaper
@@ -130,15 +150,17 @@ const editPaper = async (req, res) => {
     );
     deleteUpdatedPicsInPaper(filePath, questionPaperObj);
     fs.writeFile(filePath, JSON.stringify(questionPaperObj), err => {});
-    const clientPaper = getFinalClientPaper(questionPaperObj);
-    const clientFilePath = path.join(
-      process.cwd(),
-      "resources",
-      "questionPapers",
-      "client",
-      `${paper._id}.json`
-    );
-    fs.writeFile(clientFilePath, JSON.stringify(clientPaper), err => {});
+    if (isCompleted) {
+      const clientPaper = getFinalClientPaper(questionPaperObj);
+      const clientFilePath = path.join(
+        process.cwd(),
+        "resources",
+        "questionPapers",
+        "client",
+        `${paper._id}.json`
+      );
+      fs.writeFile(clientFilePath, JSON.stringify(clientPaper), err => {});
+    }
     res.status(200).send("done");
   } catch (err) {
     console.log(err);
@@ -148,7 +170,7 @@ const editPaper = async (req, res) => {
 
 //GET => /admin/getPapers
 const getPapers = async (req, res) => {
-  const papers = await QuestionPaper.find();
+  const papers = await QuestionPaper.find().sort("-created_at");
   res.json(papers);
 };
 

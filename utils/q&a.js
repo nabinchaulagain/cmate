@@ -61,9 +61,6 @@ const getFinalQuestionsObj = (files, recievedPaper) => {
         ending: parseInt(directionImageInQn.endingNum)
       };
     }
-    if (recievedPaper[i].question === "noneed") {
-      singleQuestion.question = "";
-    }
     questionPaperObj[i] = singleQuestion;
   }
   const isCompleted = incompleteQuestions === 0;
@@ -160,6 +157,9 @@ const getFinalClientPaper = questionPaperObj => {
     }
     if (directionImageInQn) {
       singleQuestion.directionImage = directionImageInQn.url;
+    }
+    if (singleQuestion.question === "noneed") {
+      singleQuestion.question = "";
     }
     clientPaper[i] = singleQuestion;
   }

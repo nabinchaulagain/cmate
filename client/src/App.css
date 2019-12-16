@@ -54,7 +54,25 @@ body {
   background: #09002b;
   z-index: 10000000001;
 }
-
+.checkbox {
+  font-size: 130%;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.checked {
+  color: #03fc52;
+}
+.unchecked {
+  color: white;
+  opacity: 0.7;
+}
+.checkbox-dark.checked {
+  color: #2bff84;
+}
+.checkbox-dark.unchecked {
+  color: #2bff84;
+  opacity: 1;
+}
 .btn:focus {
   box-shadow: none !important;
 }

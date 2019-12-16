@@ -1,0 +1,21 @@
+.quiz-card {
+  background: rgb(171, 171, 172);
+  padding: 10px 2%;
+  color: black;
+}
+
+.questionNumBtn {
+  width: 30px;
+  height: 30px;
+  font-size: 60%;
+  border: none;
+  /* border-color: rgb(211, 205, 205); */
+  background: rgb(211, 205, 205);
+  color: black;
+  border-radius: 100%;
+  text-align: center;
+}
+.selected {
+  background: grey;
+  color: white;
+}

@@ -7,13 +7,6 @@ const validateQuestion = question => {
       return false;
     }
   }
-  if (
-    question.directionImage &&
-    question.directionImage.url &&
-    !question.directionImage.ending
-  ) {
-    return false;
-  }
   return true;
 };
 module.exports = validateQuestion;

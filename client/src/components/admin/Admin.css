@@ -12,18 +12,6 @@
 #sidebar-list :hover {
   color: #89faba;
 }
-.checkbox {
-  font-size: 130%;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.checked {
-  color: #03fc52;
-}
-.unchecked {
-  color: white;
-  opacity: 0.7;
-}
 .checkbox-label {
   margin-bottom: 7px;
 }

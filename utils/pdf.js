@@ -84,6 +84,14 @@ const extractQuestionPaper = rawText => {
             )[1];
             continue;
           }
+          if (i === 20) {
+            questions[i] = section.match(
+              new RegExp(i + "\\.\\s(.+)" + (i + 1) + "\\.", "s")
+            )[1];
+            questions[i] = questions[i].replace(/Direction.+21/, "21");
+            console.log(questions[i]);
+            continue;
+          }
           questions[i] = section.match(
             new RegExp(i + "\\.\\s(.{30,470})" + (i + 1) + "\\.", "s")
           )[1];
