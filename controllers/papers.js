@@ -32,7 +32,7 @@ const getPaper = async (req, res) => {
     "resources",
     "questionPapers",
     "client",
-    `${paper._id}.json`
+    `${paper._id}.question.json`
   );
   if (fs.existsSync(filePath)) {
     const fileData = fs.readFileSync(filePath).toString();

@@ -75,14 +75,30 @@ const savePaper = async (req, res) => {
     );
     if (isCompleted) {
       const clientPaper = getFinalClientPaper(questionPaperObj);
-      const clientFilePath = path.join(
+      const clientQuestionPath = path.join(
         process.cwd(),
         "resources",
         "questionPapers",
         "client",
-        `${savedPaper._id}.json`
+        `${savedPaper._id}.question.json`
       );
-      fs.writeFile(clientFilePath, JSON.stringify(clientPaper), err => {});
+      const clientAnswerPath = path.join(
+        process.cwd(),
+        "resources",
+        "questionPapers",
+        "client",
+        `${savedPaper._id}.answer.json`
+      );
+      fs.writeFile(
+        clientFilePath,
+        JSON.stringify(clientPaper.questions),
+        err => {}
+      );
+      fs.writeFile(
+        clientAnswerPath,
+        JSON.stringify(clientPaper.answers),
+        err => {}
+      );
     }
     res.status(200).send("Done");
   } catch (err) {
@@ -106,17 +122,25 @@ const deletePaper = async (req, res) => {
     "questionPapers",
     `${paper._id}.json`
   );
-  const clientFilePath = path.join(
+  const clientQuestionPath = path.join(
     process.cwd(),
     "resources",
     "questionPapers",
     "client",
-    `${paper._id}.json`
+    `${paper._id}.question.json`
+  );
+  const clientAnswerPath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    "client",
+    `${paper._id}.answer.json`
   );
   await paper.remove();
   deleteAllImagesInPaper(filePath);
   fs.unlink(filePath, err => {});
-  fs.unlink(clientFilePath, err => {});
+  fs.unlink(clientQuestionPath, err => {});
+  fs.unlink(clientAnswerPath, err => {});
   res.status(200).send(await QuestionPaper.find().sort("-created_at"));
 };
 
@@ -152,14 +176,30 @@ const editPaper = async (req, res) => {
     fs.writeFile(filePath, JSON.stringify(questionPaperObj), err => {});
     if (isCompleted) {
       const clientPaper = getFinalClientPaper(questionPaperObj);
-      const clientFilePath = path.join(
+      const clientQuestionPath = path.join(
         process.cwd(),
         "resources",
         "questionPapers",
         "client",
-        `${paper._id}.json`
+        `${paper._id}.question.json`
       );
-      fs.writeFile(clientFilePath, JSON.stringify(clientPaper), err => {});
+      const clientAnswerPath = path.join(
+        process.cwd(),
+        "resources",
+        "questionPapers",
+        "client",
+        `${paper._id}.answer.json`
+      );
+      fs.writeFile(
+        clientQuestionPath,
+        JSON.stringify(clientPaper.questions),
+        err => {}
+      );
+      fs.writeFile(
+        clientAnswerPath,
+        JSON.stringify(clientPaper.answers),
+        err => {}
+      );
     }
     res.status(200).send("done");
   } catch (err) {

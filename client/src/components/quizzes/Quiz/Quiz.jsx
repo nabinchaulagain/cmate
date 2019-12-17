@@ -4,6 +4,7 @@ import "../quizzes.css";
 import SingleQuestion from "./SingleQuestion";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Checkbox from "../../extras/Checkbox";
+import QuizTimer from "./QuizTimer";
 
 const Quiz = () => {
   const { store, actions } = useContext(QuizContext);
@@ -15,6 +16,7 @@ const Quiz = () => {
       <div className="ml-4 mt-2 col-lg-8 col-12 mx-auto">
         <h2 className="text-center">{store.title}</h2>
         <div className="text-right mb-2">
+          <QuizTimer />
           <Checkbox
             checked={store.skipOnAnswer}
             onClick={actions.setSkipOnAnswer}

@@ -140,11 +140,15 @@ const getFinalClientPaper = questionPaperObj => {
         });
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
+  clientPaper.questions = {};
+  clientPaper.answers = {};
   for (let i = 1; i <= 100; i++) {
     const singleQuestion = { ...questionPaperObj[i] };
+    const singleAnswer = singleQuestion.correctOption;
+    delete singleQuestion.correctOption;
     const directionInQn = directions.find(
       direction => i >= direction.questionNum && i <= direction.ending
     );
@@ -161,8 +165,10 @@ const getFinalClientPaper = questionPaperObj => {
     if (singleQuestion.question === "noneed") {
       singleQuestion.question = "";
     }
-    clientPaper[i] = singleQuestion;
+    clientPaper.questions[i] = singleQuestion;
+    clientPaper.answers[i] = singleAnswer;
   }
+
   return clientPaper;
 };
 module.exports = {
