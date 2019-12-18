@@ -25,7 +25,8 @@ const QuizProvider = props => {
         setTitle(data.title);
         setQuestionPaper(data.questions);
       } catch (err) {
-        window.location = "/quizzes";
+        // if(err)
+        // window.location = "/quizzes";
       }
     };
     initQuestionPaper();

@@ -76,6 +76,15 @@ body {
 .btn:focus {
   box-shadow: none !important;
 }
+button:focus {
+  outline: none;
+}
+.singleQuestionRight {
+  background: #c3fcac;
+}
+.singleQuestionWrong {
+  background: #ffbabc;
+}
 @media only screen and (max-width: 767px) {
   #profile-dropdown {
     /* top: 150px !important; */
