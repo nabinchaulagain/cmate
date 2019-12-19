@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import history from "../../../history";
 export const QuizContext = React.createContext();
 
 const QuizProvider = props => {
@@ -18,6 +18,14 @@ const QuizProvider = props => {
       setQuestionNum(qn + 1);
     }
   });
+  const finishQuiz = React.useCallback(async () => {
+    await axios.post("/api/saveQuizResult", {
+      questionPaperId: props.quizId,
+      timeRemaining: time,
+      answers
+    });
+    history.push(`/quizResult/${props.quizId}`);
+  });
   useEffect(() => {
     const initQuestionPaper = async () => {
       try {
@@ -25,18 +33,21 @@ const QuizProvider = props => {
         setTitle(data.title);
         setQuestionPaper(data.questions);
       } catch (err) {
-        // if(err)
-        // window.location = "/quizzes";
+        if (err) window.location = "/quizzes";
       }
     };
     initQuestionPaper();
   }, []);
   useEffect(() => {
+    let isSubscribed = true;
     if (time !== 0) {
       setTimeout(() => {
-        setTime(time - 1);
-      }, 970);
+        if (isSubscribed) {
+          setTime(time - 1);
+        }
+      }, 950);
     }
+    return () => (isSubscribed = false);
   }, [time]);
   return (
     <QuizContext.Provider
@@ -56,7 +67,8 @@ const QuizProvider = props => {
           setSkipOnAnswer: () => {
             setSkipOnAnswer(!skipOnAnswer);
           },
-          setShowResult
+          setShowResult,
+          finishQuiz
         }
       }}
     >
@@ -64,5 +76,7 @@ const QuizProvider = props => {
     </QuizContext.Provider>
   );
 };
+
+const sumbitQuiz = () => {};
 
 export default QuizProvider;

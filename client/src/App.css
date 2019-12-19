@@ -83,7 +83,7 @@ button:focus {
   background: #c3fcac;
 }
 .singleQuestionWrong {
-  background: #ffbabc;
+  background: #e3b7b3;
 }
 @media only screen and (max-width: 767px) {
   #profile-dropdown {

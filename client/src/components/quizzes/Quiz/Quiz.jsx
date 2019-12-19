@@ -5,7 +5,7 @@ import SingleQuestion from "./SingleQuestion";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Checkbox from "../../extras/Checkbox";
 import QuizTimer from "./QuizTimer";
-
+import Modal from "../../extras/Modal";
 const Quiz = () => {
   const { store, actions } = useContext(QuizContext);
   if (!store.questionPaper || !store.title) {
@@ -53,6 +53,16 @@ const Quiz = () => {
             )}
           </div>
         </div>
+        <div className="text-center">
+          <Modal
+            openButton={{
+              className: "btn btn-primary px-4 save-qp-button",
+              text: "Save Question Paper"
+            }}
+            modalHeading="Are you Done?"
+            modalBody={<ModalBody store={store} actions={actions} />}
+          />
+        </div>
       </div>
     </React.Fragment>
   );
@@ -83,6 +93,32 @@ const QuestionNumberDisplayer = () => {
     );
   }
   return elems;
+};
+
+const ModalBody = ({ actions, store }) => {
+  const incompleteQuestions = 100 - Object.keys(store.answers).length;
+  if (incompleteQuestions === 0) {
+    return (
+      <div>
+        <p>It is recomended that you go through your answers at least twice</p>
+        <button className="btn btn-success" onClick={actions.finishQuiz}>
+          Confirm Answers
+        </button>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <p>
+        There are still{" "}
+        <b className="text-danger">{incompleteQuestions} questions</b> you
+        haven't attempted. Do you still want to finish?
+      </p>
+      <button className="btn btn-success" onClick={actions.finishQuiz}>
+        Confirm answers
+      </button>
+    </div>
+  );
 };
 
 export default Quiz;

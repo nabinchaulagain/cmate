@@ -66,7 +66,7 @@ const Options = ({ options, setAnswer, correctOption }) => {
       <div className={`col-6 mb-2 text-center`} key={optNo}>
         <button
           className={`btn text-center p-2 btn-${
-            optNo === correctOption ? "success" : "warning"
+            optNo === correctOption ? "info" : "warning"
           }`}
           onClick={() => setAnswer(optNo)}
         >
