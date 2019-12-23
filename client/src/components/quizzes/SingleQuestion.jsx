@@ -1,12 +1,22 @@
 import React from "react";
 import formatQuestion from "../../utils/formatQuestion";
-const SingleQuestion = ({ question, answer, actions, store, variant }) => {
+const SingleQuestion = ({
+  question,
+  answer,
+  actions,
+  store,
+  variant,
+  questionNum
+}) => {
   return (
     <div
       className={`col-lg-8 col-sm-10 col-12 mx-auto jumbotron p-3 ${
         variant === "green" ? "singleQuestionRight" : ""
       }${variant === "red" ? "singleQuestionWrong" : ""}`}
     >
+      {questionNum && (
+        <h6 className="text-center">Question No. {questionNum}</h6>
+      )}
       <Direction direction={question.direction} />
       <h5
         dangerouslySetInnerHTML={{ __html: formatQuestion(question.question) }}

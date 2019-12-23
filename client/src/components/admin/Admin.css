@@ -64,8 +64,6 @@ input[type="number"] {
 }
 .save-qp-button {
   font-size: 120% !important;
-  background: #ff5d30 !important;
-  border-color: #ff5d30 !important;
 }
 #modalFormInput {
   border: 1px solid black !important;

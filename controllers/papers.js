@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const QuizResults = require("../models/QuizResults");
+const QuizProgress = require("../models/Progress");
+
 //Controller for GET => /getPapers
 const getPapers = async (req, res) => {
   const papers = await QuestionPaper.find({ isCompleted: true }).sort(
@@ -37,7 +39,8 @@ const getPaper = async (req, res) => {
   );
   if (fs.existsSync(filePath)) {
     const fileData = fs.readFileSync(filePath).toString();
-    return res.json({ questions: JSON.parse(fileData), title: paper.title });
+    const response = { questions: JSON.parse(fileData), title: paper.title };
+    return res.json(response);
   }
   res.status(404).send("not found");
 };
@@ -76,7 +79,7 @@ const getAnswer = async (req, res) => {
 const saveQuizResult = async (req, res) => {
   try {
     if (
-      !req.body.timeRemaining ||
+      req.body.timeRemaining === null ||
       !req.body.answers ||
       !req.body.questionPaperId
     ) {
@@ -129,9 +132,14 @@ const saveQuizResult = async (req, res) => {
       answers
     });
     const savedResult = await newResult.save();
+    try {
+      await QuizProgress.findOneAndDelete({
+        "user._id": req.user._id,
+        questionPaperId: questionPaper._id
+      });
+    } catch (err) {}
     res.status(201).json(savedResult);
   } catch (err) {
-    console.log(err);
     res.status(500).send("Server error");
   }
 };
@@ -158,10 +166,73 @@ const getQuizResult = async (req, res) => {
     res.status(404).send("Result not found");
   }
 };
+
+// controller for PUT => /saveQuizProgress
+const saveQuizProgress = async (req, res) => {
+  const { timeRemaining, answers, questionPaperId } = req.body;
+  if (!timeRemaining || !answers || !questionPaperId) {
+    return res.status(400).send("Incomplete body");
+  }
+  const previousProgress = await QuizProgress.findOne({
+    "user._id": new mongoose.Types.ObjectId(req.user._id),
+    questionPaperId: new mongoose.Types.ObjectId(questionPaperId)
+  });
+  if (previousProgress) {
+    await previousProgress.remove();
+  }
+  const newProgress = new QuizProgress({
+    user: req.user,
+    questionPaperId,
+    answers,
+    timeRemaining
+  });
+  res.json(await newProgress.save());
+};
+
+// controller for GET => /getQuizProgress?paperId
+const getQuizProgress = async (req, res) => {
+  try {
+    const previousProgress = await QuizProgress.findOne({
+      questionPaperId: new mongoose.Types.ObjectId(req.query.paperId),
+      "user._id": new mongoose.Types.ObjectId(req.user._id)
+    });
+    if (previousProgress) {
+      const response = {
+        answers: previousProgress.answers,
+        timeRemaining: previousProgress.timeRemaining
+      };
+      return res.send(response);
+    }
+    res.status(404).send("Paper not found");
+  } catch (err) {
+    res.status(404).send("Not found");
+  }
+};
+
+// controller for DELETE => /deleteQuizProgress?paperId
+const deleteQuizProgress = async (req, res) => {
+  try {
+    const previousProgress = await QuizProgress.findOne({
+      questionPaperId: new mongoose.Types.ObjectId(req.query.paperId),
+      "user._id": new mongoose.Types.ObjectId(req.user._id)
+    });
+    if (!previousProgress) {
+      return res.status(400).send("Bad");
+    }
+    await previousProgress.remove();
+    res.send("done");
+  } catch (err) {
+    res.status(404).send("Not found");
+  }
+};
+
 module.exports = {
   getPapers,
   getPaper,
   saveQuizResult,
   getQuizResult,
-  getAnswer
+  getAnswer,
+  saveQuizProgress,
+  deleteQuizProgress,
+  getQuizProgress
 };

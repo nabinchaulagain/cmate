@@ -2,21 +2,29 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import history from "../../../history";
+import { Prompt } from "react-router-dom";
 export const QuizContext = React.createContext();
 
 const QuizProvider = props => {
   const [questionPaper, setQuestionPaper] = useState(null);
   const [title, setTitle] = useState(null);
   const [questionNum, setQuestionNum] = useState(1);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState(props.initialValues.answers);
   const [skipOnAnswer, setSkipOnAnswer] = useState(true);
-  const [time, setTime] = useState(5400);
-  const [showResult, setShowResult] = useState(false);
+  const [time, setTime] = useState(props.initialValues.timeRemaining);
   const setAnswer = React.useCallback((qn, ansNo) => {
     setAnswers({ ...answers, [qn]: ansNo });
     if (qn !== 100 && skipOnAnswer) {
       setQuestionNum(qn + 1);
     }
+  });
+  const saveProgress = React.useCallback(async () => {
+    await axios.put("/api/saveQuizProgress", {
+      timeRemaining: time,
+      answers,
+      questionPaperId: props.quizId
+    });
+    history.push("/");
   });
   const finishQuiz = React.useCallback(async () => {
     await axios.post("/api/saveQuizResult", {
@@ -46,7 +54,12 @@ const QuizProvider = props => {
           setTime(time - 1);
         }
       }, 950);
+    } else {
+      if (isSubscribed) {
+        finishQuiz();
+      }
     }
+
     return () => (isSubscribed = false);
   }, [time]);
   return (
@@ -58,8 +71,7 @@ const QuizProvider = props => {
           questionNum,
           answers,
           skipOnAnswer,
-          time,
-          showResult
+          time
         },
         actions: {
           setQuestionNum,
@@ -67,16 +79,22 @@ const QuizProvider = props => {
           setSkipOnAnswer: () => {
             setSkipOnAnswer(!skipOnAnswer);
           },
-          setShowResult,
-          finishQuiz
+          finishQuiz,
+          saveProgress
         }
       }}
     >
+      <Prompt
+        message="Are you sure you want to leave? You might want to save your progress or finish the quiz"
+        when={!isModalOpen()}
+      />
       {props.children}
     </QuizContext.Provider>
   );
 };
 
-const sumbitQuiz = () => {};
-
+const isModalOpen = () => {
+  const modal = document.querySelector("div[role='dialog']");
+  return Boolean(modal);
+};
 export default QuizProvider;

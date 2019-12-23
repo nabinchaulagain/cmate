@@ -61,6 +61,7 @@ const QuizResult = props => {
           question={questionPaper.questions[i]}
           answer={answerSheet.answers[i]}
           variant={variant}
+          questionNum={i}
         />
       </div>
     );
