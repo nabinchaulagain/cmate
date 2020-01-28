@@ -6,6 +6,6 @@ mongoose
     useNewUrlParser: true
   })
   .then(async () => {
-    const qp = await QuestionPaper.find().sort("-created_at");
-    console.log(qp);
+    const qps = await QuestionPaper.find().sort("-created_at");
+    const imagesNotToDelete = [];
   });

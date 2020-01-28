@@ -59,5 +59,18 @@ const ProfilePic = props => {
     </div>
   );
 };
+export const ProfilePicReusable = ({ user, size }) => {
+  return (
+    <React.Fragment>
+      <img
+        src={user.profilePic}
+        style={{ width: size, height: size, borderRadius: "100%" }}
+        alt={user.name}
+        title={`${user.name}(${user.email})`}
+      ></img>
+      <span>{user.name} </span>
+    </React.Fragment>
+  );
+};
 
 export default ProfilePic;

@@ -137,7 +137,12 @@ const QuestionPaperCard = ({ question, questions, setQuestions }) => {
               >
                 Yes
               </button>
-              <button className="btn btn-lg btn-danger ml-2">No</button>
+              <button
+                className="btn btn-lg btn-danger ml-2"
+                data-modal-close-button={true}
+              >
+                No
+              </button>
             </div>
           }
         />

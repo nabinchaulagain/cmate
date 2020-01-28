@@ -41,7 +41,8 @@ const QuizProvider = props => {
         setTitle(data.title);
         setQuestionPaper(data.questions);
       } catch (err) {
-        if (err) window.location = "/quizzes";
+        console.log(err);
+        // if (err) window.location = "/quizzes";
       }
     };
     initQuestionPaper();
@@ -86,7 +87,7 @@ const QuizProvider = props => {
     >
       <Prompt
         message="Are you sure you want to leave? You might want to save your progress or finish the quiz"
-        when={!isModalOpen()}
+        when={time !== 0 && !isModalOpen()}
       />
       {props.children}
     </QuizContext.Provider>

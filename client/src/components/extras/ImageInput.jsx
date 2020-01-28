@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import isImage from "../../utils/isImage";
 const ImageInputField = props => {
-  const [uploadedImg, setUploadedImg] = useState(props.initialImage);
+  const [uploadedImg, setUploadedImg] = useState(null);
+  React.useEffect(() => {
+    setUploadedImg(props.initialImage);
+  }, [props.initialImage]);
   return (
     <div className="mt-2">
       <div className="text-left">
@@ -12,9 +16,13 @@ const ImageInputField = props => {
         type="file"
         name={props.name}
         onChange={ev => {
-          setUploadedImg(ev.target.files[0]);
-          if (props.setImageInState) {
-            props.setImageInState(ev.target.files[0]);
+          if (ev.target.files[0]) {
+            if (isImage(ev.target.files[0].name)) {
+              setUploadedImg(ev.target.files[0]);
+              if (props.setImageInState) {
+                props.setImageInState(ev.target.files[0]);
+              }
+            }
           }
         }}
         style={{ display: "none" }}

@@ -9,7 +9,7 @@ const progressSchema = new Schema({
     ref: "questionPaper"
   },
   timeRemaining: Number,
-  answers: { type: Object, required: true }
+  answers: { type: Object, required: true, default: {} }
 });
 
 const Progress = mongoose.model("progress", progressSchema);

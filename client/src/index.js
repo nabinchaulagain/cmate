@@ -8,10 +8,12 @@ import history from "./history";
 import authReducer from "./reducers/auth";
 import flashMessageReducer from "./reducers/flashMessage";
 import thunk from "redux-thunk";
+import discussionsReducer from "./reducers/discussions";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducers = combineReducers({
   auth: authReducer,
-  flashMessage: flashMessageReducer
+  flashMessage: flashMessageReducer,
+  discussions: discussionsReducer
 });
 const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 ReactDOM.render(

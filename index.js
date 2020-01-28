@@ -10,6 +10,9 @@ const isAdmin = require("./middlewares/isAdmin");
 const isAuthenticated = require("./middlewares/isAuthenticated");
 const paperRoutes = require("./routes/papers");
 const resultRoutes = require("./routes/results");
+const discussionRoutes = require("./routes/discussions");
+const errorHandler = require("./middlewares/errorHandler");
+
 require("./models/User");
 
 const app = express();
@@ -28,8 +31,9 @@ app.use("/api/admin", isAuthenticated, isAdmin, adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", paperRoutes);
 app.use("/api/results", resultRoutes);
-
+app.use("/api/discussions", discussionRoutes);
 app.use("/images", express.static("resources/images"));
+app.use(errorHandler);
 
 mongoose
   .connect("mongodb+srv://nabin1:pword@cluster0-eumyn.mongodb.net/cmate", {

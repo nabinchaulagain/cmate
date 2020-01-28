@@ -186,6 +186,7 @@ const saveQuizProgress = async (req, res) => {
     answers,
     timeRemaining
   });
+  console.log(newProgress);
   res.json(await newProgress.save());
 };
 

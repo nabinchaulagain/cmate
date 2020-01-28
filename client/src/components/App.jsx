@@ -14,6 +14,7 @@ import Quizzes from "./quizzes/QuizzesHome";
 import history from "../history";
 import Quiz from "./quizzes/Quiz/index";
 import QuizResults from "./quizzes/Results/QuizResult";
+import DiscussionsHome from "./discussions/DiscussionsHome";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/admin/editPaper/:id" component={EditPaper} exact />
         <Route path="/quiz/:id" component={Quiz} exact />
         <Route path="/quizResult/:id" component={QuizResults} exact />
+        <Route path="/discussions" component={DiscussionsHome} exact />
       </Switch>
     </div>
   );
