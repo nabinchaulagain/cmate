@@ -1,5 +1,5 @@
 const DiscussionReplies = require("../models/DiscussionReplies");
-const { deleteAllPicsInQuestion } = require("../utils/discussions");
+const { deletePics } = require("../utils/discussions");
 
 // GET => discussions/:questionId/replies
 const getReplies = async (req, res) => {
@@ -39,7 +39,7 @@ const editReply = async (req, res) => {
   if (req.user._id.toString() !== reply.user._id.toString()) {
     return res.status(403).send("Unauthorized");
   }
-  deleteAllPicsInQuestion(...reply.images);
+  deletePics(...reply.images);
   reply.images = req.files.map(image => {
     return image.filename;
   });

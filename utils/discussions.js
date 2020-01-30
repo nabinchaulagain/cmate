@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const deleteAllPicsInQuestion = (...pics) => {
+const deletePics = (...pics) => {
   for (pic of pics) {
     if (pic) {
       const imageLocation = path.join(
@@ -14,4 +14,4 @@ const deleteAllPicsInQuestion = (...pics) => {
   }
 };
 
-module.exports = { deleteAllPicsInQuestion };
+module.exports = { deletePics };

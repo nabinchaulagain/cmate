@@ -1,5 +1,5 @@
 const DiscussionQuestion = require("../models/DiscussionQuestion");
-const { deleteAllPicsInQuestion } = require("../utils/discussions");
+const { deletePics } = require("../utils/discussions");
 // Controller for POST=> /discussions
 const addQuestion = async (req, res) => {
   const newQuestion = new DiscussionQuestion({
@@ -74,7 +74,7 @@ const editQuestion = async (req, res) => {
     return res.status(400).send(req.fileUploadError);
   }
   if (req.files.images) {
-    deleteAllPicsInQuestion(...question.images);
+    deletePics(...question.images);
     question.images = req.files.images.map(image => {
       return image.filename;
     });
@@ -101,9 +101,6 @@ const deleteQuestion = async (req, res) => {
   }
   if (question.user._id.toString() !== req.user._id.toString()) {
     return res.status(403).send("Unauthorized");
-  }
-  if (Array.isArray(question.images)) {
-    deleteAllPicsInQuestion(...question.images);
   }
   await question.remove();
   res.send("done");

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { deletePics } = require("../utils/discussions");
 const discussionRepliesSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Types.ObjectId,
@@ -18,6 +19,12 @@ const discussionRepliesSchema = new mongoose.Schema({
     required: true,
     default: Date.now
   }
+});
+
+discussionRepliesSchema.pre("remove", function(next) {
+  console.log("called");
+  deletePics(...this.images);
+  next();
 });
 
 const DiscussionReplies = mongoose.model(

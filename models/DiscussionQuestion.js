@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const DiscussionReplies = require("./DiscussionReplies");
+const { deletePics } = require("../utils/discussions");
 const discussionPostSchema = new mongoose.Schema({
   question: {
     required: true,
@@ -12,9 +13,14 @@ const discussionPostSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now }
 });
 
+discussionPostSchema.pre("remove", function(next) {
+  deletePics(...this.images);
+  next();
+});
+
 discussionPostSchema.pre("remove", async function(next) {
-  await DiscussionReplies.deleteMany({
-    questionId: mongoose.Types.ObjectId(this._id)
+  (await DiscussionReplies.find()).forEach(async reply => {
+    await reply.remove();
   });
   next();
 });
