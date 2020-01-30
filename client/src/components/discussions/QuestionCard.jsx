@@ -56,8 +56,9 @@ const QuestionCard = ({
             </div>
           </div>
         }
-        modalBody={<QuestionModal description={description} images={images} />}
-        className="bg-dark"
+        modalBody={
+          <QuestionModal description={description} images={images} id={id} />
+        }
       />
       <QuestionActions
         id={id}

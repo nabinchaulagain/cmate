@@ -8,8 +8,11 @@ const ImageInputs = props => {
   }, [props.initialImages]);
   return (
     <div className="text-left">
-      <label htmlFor={props.label} className="btn btn-sm btn-light">
-        Add {props.label}
+      <label
+        htmlFor={props.label}
+        className={`btn btn-${props.btnVariant || "light"}`}
+      >
+        {props.label}
       </label>
       <input
         type="file"
@@ -17,8 +20,8 @@ const ImageInputs = props => {
         style={{ display: "none" }}
         multiple={true}
         onChange={ev => {
-          if (Object.keys(ev.target.files).length >= 6) {
-            setError("Only 5 images or less are allowed");
+          if (Object.keys(ev.target.files).length > (props.maxFiles || 5)) {
+            setError(`Only ${props.maxFiles || 5} images or less are allowed`);
           } else {
             if (Object.keys(ev.target.files).length >= 1) {
               for (const imgFile of ev.target.files) {
@@ -27,6 +30,7 @@ const ImageInputs = props => {
                 }
               }
               setImages(ev.target.files);
+              setError(null);
               props.setImagesInState(ev.target.files);
             }
           }

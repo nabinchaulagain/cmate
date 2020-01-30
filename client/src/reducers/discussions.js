@@ -19,14 +19,19 @@ const discussionsReducer = (state = inititalState, action) => {
         nextPage: action.payload.nextPage,
         currPage: action.payload.currPage
       };
-    case "GET_QUESTION":
+
+    case "GET_REPLIES":
       return {
         ...state,
         questions: {
           ...state.questions,
-          [action.payload.id]: action.payload.question
+          [action.payload.id]: {
+            ...state.questions[action.payload.id],
+            replies: action.payload.replies
+          }
         }
       };
+
     case "ADD_QUESTION":
       return {
         ...state,
@@ -35,6 +40,7 @@ const discussionsReducer = (state = inititalState, action) => {
           ...state.questions
         }
       };
+
     case "EDIT_QUESTION":
       return {
         questions: {
@@ -42,10 +48,12 @@ const discussionsReducer = (state = inititalState, action) => {
           [action.payload.id]: action.payload.question
         }
       };
+
     case "DELETE_QUESTION":
-      const newState = { ...state };
+      let newState = { ...state };
       delete newState.questions[action.payload.id];
       return newState;
+
     case "ERROR":
       if (action.payload.id) {
         return {
@@ -57,6 +65,35 @@ const discussionsReducer = (state = inititalState, action) => {
         };
       }
       return { ...state, serverError: { add: action.payload.message } };
+
+    case "ADD_REPLY":
+      return {
+        ...state,
+        questions: {
+          ...state.questions,
+          [action.payload.questionId]: {
+            ...state.questions[action.payload.questionId],
+            replies: [
+              action.payload.reply,
+              ...state.questions[action.payload.questionId].replies
+            ]
+          }
+        }
+      };
+
+    case "DELETE_REPLY":
+      return {
+        ...state,
+        questions: {
+          ...state.questions,
+          [action.payload.questionId]: {
+            ...state.questions[action.payload.questionId],
+            replies: state.questions[action.payload.questionId].replies.filter(
+              reply => reply._id !== action.payload.replyId
+            )
+          }
+        }
+      };
     default:
       break;
   }

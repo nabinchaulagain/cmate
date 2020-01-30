@@ -14,13 +14,13 @@ export const getQuestions = (pageNum = 1) => {
   };
 };
 
-export const getQuestion = id => {
+export const getQuestionReplies = id => {
   return async dispatch => {
-    const response = await axios.get(`/api/discussions/${id}`);
+    const response = await axios.get(`/api/discussions/${id}/replies`);
     dispatch({
-      type: "GET_QUESTION",
+      type: "GET_REPLIES",
       payload: {
-        question: response.data,
+        replies: response.data,
         id
       }
     });
@@ -83,6 +83,35 @@ export const deleteQuestion = id => {
       type: "DELETE_QUESTION",
       payload: {
         id
+      }
+    });
+  };
+};
+
+export const addReply = (questionId, reply) => {
+  return async dispatch => {
+    const response = await axios.post(
+      `/api/discussions/${questionId}/replies`,
+      reply
+    );
+    dispatch({
+      type: "ADD_REPLY",
+      payload: {
+        questionId,
+        reply: response.data
+      }
+    });
+  };
+};
+
+export const deleteReply = (questionId, replyId) => {
+  return async function(dispatch) {
+    await axios.delete(`/api/discussions/${questionId}/replies/${replyId}`);
+    dispatch({
+      type: "DELETE_REPLY",
+      payload: {
+        questionId,
+        replyId
       }
     });
   };

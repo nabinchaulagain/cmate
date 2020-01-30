@@ -35,7 +35,7 @@ const ModalComp = props => {
         <Modal.Body
           className="text-center"
           ref={modalBodyRef}
-          style={{ background: "#ebebeb" }}
+          style={{ background: props.background || "#ebebeb" }}
         >
           {props.modalBody}
         </Modal.Body>
