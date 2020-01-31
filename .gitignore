@@ -4,3 +4,4 @@
 /resources/questionPapers/*
 /resources/result.json
 .vscode
+app.js
