@@ -43,6 +43,9 @@ const QuestionReply = ({ reply }) => {
         {!isOpen && <IoMdArrowDropright size={24} />}
         {isOpen && <IoMdArrowDropdown size={24} />}
         <ProfilePicReusable user={reply.user} size={20} />
+        <sub style={{ fontSize: "55%" }}>
+          {new Date(reply.created_at).toLocaleString()}
+        </sub>
       </div>
       {isOpen && (
         <React.Fragment>

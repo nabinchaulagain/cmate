@@ -30,6 +30,9 @@ const Navbar = props => {
           <Link className="nav-link" to="/quizzes">
             Quizzes
           </Link>
+          <Link className="nav-link" to="/discussions">
+            Discussions
+          </Link>
           <Link className="nav-link" to="/results">
             Result
           </Link>

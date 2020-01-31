@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { GoVerified } from "react-icons/go";
+import { useSelector } from "react-redux";
 const ProfilePic = props => {
   const [isOpen, setOpen] = useState(false);
   const picRef = useRef(null);
@@ -60,6 +61,7 @@ const ProfilePic = props => {
   );
 };
 export const ProfilePicReusable = ({ user, size }) => {
+  const currentUser = useSelector(state => state.auth.user);
   return (
     <React.Fragment>
       <img
@@ -68,7 +70,13 @@ export const ProfilePicReusable = ({ user, size }) => {
         alt={user.name}
         title={`${user.name}(${user.email})`}
       ></img>
-      <span>{user.name} </span>
+      <span
+        className={
+          user._id === (currentUser && currentUser._id) ? "font-italic" : ""
+        }
+      >
+        {user.name}{" "}
+      </span>
     </React.Fragment>
   );
 };
