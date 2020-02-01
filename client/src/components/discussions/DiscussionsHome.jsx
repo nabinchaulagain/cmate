@@ -68,6 +68,7 @@ const DiscussionsHome = () => {
           images={questions[question].images}
           id={questions[question]._id}
           serverError={serverError && serverError[question]}
+          votes={questions[question].votes}
         />
       ))}
     </div>

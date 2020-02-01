@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 const DiscussionReplies = require("./DiscussionReplies");
 const { deletePics } = require("../utils/discussions");
-const discussionPostSchema = new mongoose.Schema({
+
+const voteSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId },
+  vote: { type: mongoose.Schema.Types.Number, enum: [-1, 1] }
+});
+
+const discussionQuestionSchema = new mongoose.Schema({
   question: {
     required: true,
     type: String
@@ -10,21 +16,25 @@ const discussionPostSchema = new mongoose.Schema({
   description: { type: String, required: true },
   user: { type: Object, required: true },
   likes: { type: Object, default: {} },
-  created_at: { type: Date, default: Date.now }
+  created_at: { type: Date, default: Date.now },
+  votes: [voteSchema]
 });
 
-discussionPostSchema.pre("remove", function(next) {
+discussionQuestionSchema.pre("remove", function(next) {
   deletePics(...this.images);
   next();
 });
 
-discussionPostSchema.pre("remove", async function(next) {
+discussionQuestionSchema.pre("remove", async function(next) {
   (await DiscussionReplies.find()).forEach(async reply => {
     await reply.remove();
   });
   next();
 });
 
-const DiscussionPost = mongoose.model("discussionPost", discussionPostSchema);
+const DiscussionQuestion = mongoose.model(
+  "discussionQuestion",
+  discussionQuestionSchema
+);
 
-module.exports = DiscussionPost;
+module.exports = DiscussionQuestion;

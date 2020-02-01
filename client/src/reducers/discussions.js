@@ -94,6 +94,18 @@ const discussionsReducer = (state = inititalState, action) => {
           }
         }
       };
+
+    case "LIKE_QUESTION":
+      return {
+        ...state,
+        questions: {
+          ...state.questions,
+          [action.payload.questionId]: {
+            ...state.questions[action.payload.questionId],
+            votes: action.payload.votes
+          }
+        }
+      };
     default:
       break;
   }

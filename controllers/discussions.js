@@ -106,10 +106,32 @@ const deleteQuestion = async (req, res) => {
   res.send("done");
 };
 
+// Controller for PUT => /discussions/:questionId/vote
+const vote = async (req, res) => {
+  const question = await DiscussionQuestion.findById(req.params.questionId);
+  const vote = req.body.vote;
+  if (!question) {
+    return res.status(404).send("Not found");
+  }
+  const voteIndex = question.votes.findIndex(
+    vote => vote.userId.toString() === req.user._id.toString()
+  );
+  const hasUserVoted = voteIndex !== -1;
+  if (hasUserVoted) {
+    question.votes.splice(voteIndex, 1);
+  }
+  if (vote !== undefined || vote !== null) {
+    question.votes.push({ userId: req.user._id, vote: Number(vote) });
+  }
+  question.save();
+  res.json(question.votes);
+};
+
 module.exports = {
   addQuestion,
   getQuestions,
   getQuestion,
   editQuestion,
-  deleteQuestion
+  deleteQuestion,
+  vote
 };

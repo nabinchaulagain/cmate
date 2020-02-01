@@ -6,11 +6,11 @@ import { GoCommentDiscussion } from "react-icons/go";
 import ReplyForm from "./ReplyForm";
 import { ProfilePicReusable } from "../extras/ProfilePic";
 import { IoMdArrowDropright, IoMdArrowDropdown } from "react-icons/io";
-import QuestionForm from "./QuestionForm";
 import flashMessage from "../../utils/flashMessage";
 const QuestionReplies = ({ id }) => {
   const dispatch = useDispatch();
   const replies = useSelector(state => state.discussions.questions[id].replies);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   React.useEffect(() => {
     dispatch(getQuestionReplies(id));
   }, []);
@@ -23,7 +23,7 @@ const QuestionReplies = ({ id }) => {
         <GoCommentDiscussion />
         {replies.length} Replies
       </h5>
-      <ReplyForm id={id} />
+      {isLoggedIn && <ReplyForm id={id} />}
       <div className="mt-3">
         {replies.map(reply => (
           <QuestionReply key={reply._id} reply={reply} />
@@ -62,7 +62,7 @@ const QuestionReply = ({ reply }) => {
               );
             })}
           </div>
-          {user._id === reply.user._id && (
+          {user && user._id === reply.user._id && (
             <div className="mt-2 text-left">
               <button
                 className="btn btn-danger btn-sm ml-3"

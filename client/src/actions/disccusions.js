@@ -116,3 +116,18 @@ export const deleteReply = (questionId, replyId) => {
     });
   };
 };
+
+export const voteQuestion = (questionId, voteNum) => {
+  return async function(dispatch) {
+    const response = await axios.put(`/api/discussions/${questionId}/vote`, {
+      vote: voteNum
+    });
+    dispatch({
+      type: "LIKE_QUESTION",
+      payload: {
+        questionId,
+        votes: response.data
+      }
+    });
+  };
+};

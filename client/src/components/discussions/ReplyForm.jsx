@@ -3,7 +3,7 @@ import ImageInputs from "../extras/ImageInputs";
 import { useDispatch } from "react-redux";
 import { addReply } from "../../actions/disccusions";
 import flashMessage from "../../utils/flashMessage";
-const ReplyForm = ({ id, initialValues, type, label }) => {
+const ReplyForm = ({ id, label }) => {
   const [images, setImages] = React.useState(null);
   const dispatch = useDispatch();
   return (

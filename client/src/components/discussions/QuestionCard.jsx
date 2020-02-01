@@ -7,6 +7,7 @@ import { deleteQuestion } from "../../actions/disccusions";
 import flashMessage from "../../utils/flashMessage";
 import { ProfilePicReusable } from "../extras/ProfilePic";
 import QuestionForm from "./QuestionForm";
+import Votes from "./QuestionVotes";
 const QuestionCard = ({
   id,
   question,
@@ -14,7 +15,8 @@ const QuestionCard = ({
   created_at,
   user,
   images,
-  serverError
+  serverError,
+  votes
 }) => {
   const [showEditForm, setShowEditForm] = React.useState(false);
   if (showEditForm) {
@@ -31,16 +33,21 @@ const QuestionCard = ({
     );
   }
   return (
-    <div className="card p-2 mb-2" style={{ background: "#dedede" }}>
-      <div className="col-md-9 col-7">
-        <Link to={`/discussions/${id}`}></Link>
-        <h4 style={{ height: "auto", marginBottom: -5 }}>{question}</h4>
-        <small style={{ fontSize: "70%" }}>
-          By <ProfilePicReusable size={10} user={user} />
-          on {new Date(created_at).toLocaleString()}
-        </small>
-        <p className="mt-2">{description}</p>
+    <div className="card p-2" style={{ background: "#dedede" }}>
+      <div className="row">
+        <div style={{ width: "auto", marginLeft: 10 }}>
+          <Votes votes={votes} questionId={id} />
+        </div>
+        <div className="col-md-9 col-8">
+          <h5 style={{ height: "auto", marginBottom: -5 }}>{question}</h5>
+          <small style={{ fontSize: "70%" }}>
+            By <ProfilePicReusable size={10} user={user} />
+            on {new Date(created_at).toLocaleString()}
+          </small>
+          <p className="mt-2">{description}</p>
+        </div>
       </div>
+
       <Modal
         openButton={{
           text: "View Details",

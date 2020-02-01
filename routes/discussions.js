@@ -4,7 +4,8 @@ const {
   getQuestions,
   getQuestion,
   editQuestion,
-  deleteQuestion
+  deleteQuestion,
+  vote
 } = require("../controllers/discussions");
 const {
   getReplies,
@@ -70,4 +71,7 @@ router.delete(
   doesQuestionExist,
   deleteReply
 );
+
+// PUT => /discussions/:questionId/vote
+router.put("/:questionId/vote", isAuthenticated, vote);
 module.exports = router;
