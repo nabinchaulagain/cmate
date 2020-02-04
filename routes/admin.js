@@ -6,7 +6,10 @@ const {
   deletePaper,
   editPaper,
   getPapers,
-  getPaper
+  getPaper,
+  getAllReports,
+  getReportsInQuestion,
+  resolveReports
 } = require("../controllers/admin");
 const { upload, imageUpload } = require("../middlewares/upload");
 
@@ -30,5 +33,14 @@ router.get("/getPapers", getPapers);
 
 //GET => /admin/getPaper/{id}
 router.get("/getPaper/:id", getPaper);
+
+//GET => admin/getReports
+router.get("/getReports", getAllReports);
+
+//GET => admin/getReports/:paperId
+router.get("/getReports/:paperId", getReportsInQuestion);
+
+//POST => /admin/resolveReports/:paperId?questionNum
+router.post("/resolveReports/:paperId", imageUpload.any(), resolveReports);
 
 module.exports = router;

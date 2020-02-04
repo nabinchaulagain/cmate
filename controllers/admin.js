@@ -12,13 +12,15 @@ const {
 const fs = require("fs");
 const QuestionPaper = require("../models/QuestionPaper");
 const path = require("path");
+const PaperReport = require("../models/QuestionPaperReport");
+const mongoose = require("mongoose");
+const validateQuestion = require("../validators/validateQuestion");
 // controller for POST=> /admin/uploadPaper
 const uploadPaper = async (req, res) => {
   try {
     if (req.file) {
       //get raw text
       const rawText = await getPDFText(req.file.buffer);
-      fs.writeFile("./info.txt", rawText, () => {});
       //get json format of question paper and send it
       const qp = extractQuestionPaper(rawText);
       res.json(qp);
@@ -90,7 +92,7 @@ const savePaper = async (req, res) => {
         `${savedPaper._id}.answer.json`
       );
       fs.writeFile(
-        clientFilePath,
+        clientQuestionPath,
         JSON.stringify(clientPaper.questions),
         err => {}
       );
@@ -236,6 +238,149 @@ const getPaper = async (req, res) => {
   res.status(404).send("not found");
 };
 
+//GET => admin/getReports
+const getAllReports = async (req, res) => {
+  const allReports = await PaperReport.find().populate(
+    "questionPaper",
+    "title"
+  );
+  const reports = {};
+  let totalReports = 0;
+  allReports.forEach(report => {
+    totalReports++;
+    const currentReport = {
+      reporter: report.reporter,
+      description: report.description
+    };
+    const paperId = report.questionPaper._id;
+    const questionNum = report.questionNum;
+    if (reports[paperId]) {
+      if (reports[paperId][questionNum]) {
+        reports[paperId][questionNum].push(currentReport);
+      } else {
+        reports[paperId][questionNum] = [currentReport];
+      }
+    } else {
+      reports[paperId] = {
+        [report.questionNum]: [currentReport],
+        title: report.questionPaper.title
+      };
+    }
+  });
+
+  res.json({ reports, totalReports });
+};
+
+//GET => admin/getReports/:paperId?questionNum
+const getReportsInQuestion = async (req, res) => {
+  if (req.query.questionNum <= 0 || req.query.questionNum >= 101) {
+    return res.status(400).send("question number bad");
+  }
+  const findCriteria = {
+    questionPaper: mongoose.Types.ObjectId(req.params.paperId),
+    questionNum: req.query.questionNum
+  };
+  const allReports = await PaperReport.find(findCriteria);
+  const quiz = await QuestionPaper.findById(req.params.paperId);
+  const questionPath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    `${req.params.paperId}.json`
+  );
+  if (!fs.existsSync(questionPath)) {
+    return res.status(404).send("Question paper not found.");
+  }
+  const reports = [];
+  allReports.forEach(report => {
+    reports.push({
+      id: report._id,
+      reporter: report.reporter,
+      description: report.description
+    });
+  });
+  const questionData = JSON.parse(fs.readFileSync(questionPath).toString());
+  const question = questionData[req.query.questionNum];
+  res.json({ reports, initialValues: question, title: quiz.title });
+};
+
+//POST => /admin/resolveReports:paperId?questionNum=
+const resolveReports = async (req, res) => {
+  if (req.query.questionNum <= 0 || req.query.questionNum >= 101) {
+    return res.status(400).send("question number bad");
+  }
+  if (!req.body.question) {
+    return res.status(400).send("Question is needed");
+  }
+  const recievedQuestion = JSON.parse(req.body.question);
+  if (!validateQuestion(recievedQuestion)) {
+    return res.status(400).send("Wrong question format");
+  }
+  const findCriteria = {
+    questionPaper: mongoose.Types.ObjectId(req.params.paperId),
+    questionNum: req.query.questionNum
+  };
+  const allReports = await PaperReport.find(findCriteria);
+  if (allReports.length === 0) {
+    return res.status(400).send("Report not found");
+  }
+  const quiz = await QuestionPaper.findById(req.params.paperId);
+  const questionPaperPath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    `${req.params.paperId}.json`
+  );
+  if (!quiz || !fs.existsSync(questionPaperPath)) {
+    return res.status(404).send("Not found");
+  }
+  const questionPaper = JSON.parse(
+    fs.readFileSync(questionPaperPath).toString()
+  );
+  const newQuestion = { ...recievedQuestion };
+  req.files.forEach(uploadedFile => {
+    if (uploadedFile.fieldname.includes("directionImage")) {
+      const endNum = /directionImage_to_(\d+)/g.exec(uploadedFile.fieldname)[1];
+      newQuestion.directionImage = {
+        url: uploadedFile.filename,
+        ending: parseInt(endNum)
+      };
+    } else {
+      newQuestion.image = uploadedFile.filename;
+    }
+  });
+  questionPaper[req.query.questionNum] = newQuestion;
+  deleteUpdatedPicsInPaper(questionPaperPath, questionPaper);
+  fs.writeFile(questionPaperPath, JSON.stringify(questionPaper), err => {});
+  const clientPaper = getFinalClientPaper(questionPaper);
+  const clientQuestionPath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    "client",
+    `${quiz._id}.question.json`
+  );
+  const clientAnswerPath = path.join(
+    process.cwd(),
+    "resources",
+    "questionPapers",
+    "client",
+    `${quiz._id}.answer.json`
+  );
+  fs.writeFile(
+    clientQuestionPath,
+    JSON.stringify(clientPaper.questions),
+    err => {}
+  );
+  fs.writeFile(
+    clientAnswerPath,
+    JSON.stringify(clientPaper.answers),
+    err => {}
+  );
+  await PaperReport.deleteMany(findCriteria);
+  res.send("done");
+};
+
 module.exports = {
   uploadPaper,
   uploadAnswer,
@@ -243,5 +388,8 @@ module.exports = {
   deletePaper,
   editPaper,
   getPaper,
-  getPapers
+  getPapers,
+  getAllReports,
+  getReportsInQuestion,
+  resolveReports
 };

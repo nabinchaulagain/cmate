@@ -7,7 +7,8 @@ const {
   getAnswer,
   saveQuizProgress,
   getQuizProgress,
-  deleteQuizProgress
+  deleteQuizProgress,
+  reportQuestion
 } = require("../controllers/papers");
 const isAuthenticated = require("../middlewares/isAuthenticated");
 //GET =>/getPapers
@@ -31,7 +32,10 @@ router.put("/saveQuizProgress", isAuthenticated, saveQuizProgress);
 //GET => /getQuizProgress
 router.get("/getQuizProgress", isAuthenticated, getQuizProgress);
 
-//DELETE => /deleteQuizPRogress
+//DELETE => /deleteQuizProgress
 router.delete("/deleteQuizProgress", isAuthenticated, deleteQuizProgress);
+
+//POST => /report/:quizId?questionNum
+router.post("/report/:paperId", isAuthenticated, reportQuestion);
 
 module.exports = router;

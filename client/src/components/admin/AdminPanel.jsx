@@ -53,7 +53,7 @@ const AdminHome = () => {
   );
 };
 
-const renderPagination = (currentPage, questions, setCurrentPage) => {
+export const renderPagination = (currentPage, questions, setCurrentPage) => {
   const elems = [];
   for (let i = 1; i <= questions; i++) {
     elems.push(
@@ -88,7 +88,7 @@ const renderQuestionPaperList = (questions, setQuestions) => {
     );
   }
 };
-const QuestionPaperCard = ({ question, questions, setQuestions }) => {
+const QuestionPaperCard = ({ question, setQuestions }) => {
   const dispatch = useDispatch();
   return (
     <div

@@ -4,6 +4,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const QuizResults = require("../models/QuizResults");
 const QuizProgress = require("../models/Progress");
+const PaperReport = require("../models/QuestionPaperReport");
 
 //Controller for GET => /getPapers
 const getPapers = async (req, res) => {
@@ -227,6 +228,46 @@ const deleteQuizProgress = async (req, res) => {
   }
 };
 
+// Controller for POST => /report/:paperId?questionNum
+const reportQuestion = async (req, res) => {
+  const questionNum = parseInt(req.query.questionNum);
+  if (!questionNum) {
+    return res.status(400).send("question num is required");
+  }
+  if (questionNum <= 0 || questionNum >= 101) {
+    return res.status(400).send("qn not in range");
+  }
+  if (!req.body.description) {
+    return res.status(400).send("Description is missing");
+  }
+  const quiz = await QuestionPaper.findOne({
+    isCompleted: true,
+    _id: mongoose.Types.ObjectId(req.params.paperId)
+  });
+  if (!quiz) {
+    return res.status(404).send("Question Paper not found");
+  }
+  const existingReport = await PaperReport.findOne({
+    "reporter.id": req.user._id,
+    questionPaper: quiz._id,
+    questionNum
+  });
+  if (existingReport) {
+    return res.status(429).send("Already reported");
+  }
+  const newReport = await PaperReport.create({
+    questionNum,
+    questionPaper: quiz._id,
+    description: req.body.description,
+    reporter: {
+      name: req.user.name,
+      profilePic: req.user.profilePic,
+      id: req.user._id
+    }
+  });
+  res.send(newReport);
+};
+
 module.exports = {
   getPapers,
   getPaper,
@@ -235,5 +276,6 @@ module.exports = {
   getAnswer,
   saveQuizProgress,
   deleteQuizProgress,
-  getQuizProgress
+  getQuizProgress,
+  reportQuestion
 };

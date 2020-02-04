@@ -1,22 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MdReportProblem, MdAdd } from "react-icons/md";
 import { IoIosPaper } from "react-icons/io";
-import { FaUsers } from "react-icons/fa";
 const Sidebar = () => {
   return (
     <div
-      className="col-md-3 col-5 "
+      className="col-md-3 col-4"
       style={{ height: "100vh", background: "#a2a6a3" }}
     >
       <ul id="sidebar-list">
         <li>
-          <Link to="/admin/uploadPaper">
-            <IoIosPaper /> Add New Question Paper
+          <Link to="/admin/">
+            <IoIosPaper /> Question Papers
           </Link>
         </li>
         <li>
-          <Link to="/admin/Users">
-            <FaUsers /> Users
+          <Link to="/admin/uploadPaper">
+            <MdAdd /> Add New Question Paper
+          </Link>
+        </li>
+        <li>
+          <Link to="/admin/reports">
+            <MdReportProblem /> Reports
           </Link>
         </li>
       </ul>

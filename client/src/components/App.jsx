@@ -10,6 +10,8 @@ import Results from "./results/";
 import FlashMessage from "./extras/FlashMessage";
 import { removeFlashMessage } from "../actions/flashMessage";
 import EditPaper from "./admin/EditPaper";
+import Reports from "./admin/Reports";
+import ResolveReports from "./admin/ResolveReports";
 import Quizzes from "./quizzes/QuizzesHome";
 import history from "../history";
 import Quiz from "./quizzes/Quiz/index";
@@ -38,6 +40,12 @@ const App = () => {
         <Route path="/admin" component={AdminPanel} exact />
         <Route path="/admin/uploadPaper" component={AddPaper} exact />
         <Route path="/admin/editPaper/:id" component={EditPaper} exact />
+        <Route path="/admin/reports" component={Reports} exact />
+        <Route
+          path="/admin/resolve/:paperId/:questionNum"
+          component={ResolveReports}
+          exact
+        />
         <Route path="/quiz/:id" component={Quiz} exact />
         <Route path="/quizResult/:id" component={QuizResults} exact />
         <Route path="/discussions" component={DiscussionsHome} exact />
