@@ -1,6 +1,6 @@
 const validateQuestion = require("../validators/validateQuestion");
 const fs = require("fs");
-const path = require("path");
+const FilePath = require("./filePaths");
 const assignAnswers = (questions, answers) => {
   for (section in questions) {
     // i refers to question num [1-100]
@@ -71,12 +71,7 @@ const deleteUpdatedPicsInPaper = (fileName, newFileData) => {
   const oldFileData = JSON.parse(fs.readFileSync(fileName).toString());
   for (let i = 1; i <= 100; i++) {
     if (oldFileData[i].image !== newFileData[i].image && oldFileData[i].image) {
-      const imageLocation = path.join(
-        process.cwd(),
-        "resources",
-        "images",
-        oldFileData[i].image
-      );
+      const imageLocation = FilePath.imageFilePath(oldFileData[i].image);
       fs.unlink(imageLocation, () => {});
     }
     if (
@@ -84,10 +79,7 @@ const deleteUpdatedPicsInPaper = (fileName, newFileData) => {
       (!newFileData[i].directionImage ||
         oldFileData[i].directionImage.url !== newFileData[i].directionImage.url)
     ) {
-      const imageLocation = path.join(
-        process.cwd(),
-        "resources",
-        "images",
+      const imageLocation = FilePath.imageFilePath(
         oldFileData[i].directionImage.url
       );
       fs.unlink(imageLocation, () => {});
@@ -99,19 +91,11 @@ const deleteAllImagesInPaper = fileName => {
   const fileData = JSON.parse(fs.readFileSync(fileName).toString());
   for (let i = 1; i <= 100; i++) {
     if (fileData[i].image) {
-      const imageLocation = path.join(
-        process.cwd(),
-        "resources",
-        "images",
-        fileData[i].image
-      );
+      const imageLocation = FilePath.imageFilePath(fileData[i].image);
       fs.unlink(imageLocation, () => {});
     }
     if (fileData[i].directionImage) {
-      const imageLocation = path.join(
-        process.cwd(),
-        "resources",
-        "images",
+      const imageLocation = FilePath.imageFilePath(
         fileData[i].directionImage.url
       );
       fs.unlink(imageLocation, () => {});

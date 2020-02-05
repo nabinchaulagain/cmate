@@ -1,14 +1,9 @@
 const fs = require("fs");
-const path = require("path");
+const FilePath = require("./filePaths");
 const deletePics = (...pics) => {
   for (pic of pics) {
     if (pic) {
-      const imageLocation = path.join(
-        process.cwd(),
-        "resources",
-        "images",
-        pic
-      );
+      const imageLocation = FilePath.imageFilePath(pic);
       fs.unlink(imageLocation, () => {});
     }
   }

@@ -11,7 +11,7 @@ const {
 } = require("../utils/q&a");
 const fs = require("fs");
 const QuestionPaper = require("../models/QuestionPaper");
-const path = require("path");
+const FilePath = require("../utils/filePaths");
 const PaperReport = require("../models/QuestionPaperReport");
 const mongoose = require("mongoose");
 const validateQuestion = require("../validators/validateQuestion");
@@ -66,31 +66,14 @@ const savePaper = async (req, res) => {
     questionPaper.isCompleted = isCompleted;
     const savedPaper = await questionPaper.save();
     fs.writeFile(
-      path.join(
-        process.cwd(),
-        "resources",
-        "questionPapers",
-        `${savedPaper._id}.json`
-      ),
+      FilePath.questionPaperPath(savedPaper._id),
       JSON.stringify(questionPaperObj),
       err => {}
     );
     if (isCompleted) {
       const clientPaper = getFinalClientPaper(questionPaperObj);
-      const clientQuestionPath = path.join(
-        process.cwd(),
-        "resources",
-        "questionPapers",
-        "client",
-        `${savedPaper._id}.question.json`
-      );
-      const clientAnswerPath = path.join(
-        process.cwd(),
-        "resources",
-        "questionPapers",
-        "client",
-        `${savedPaper._id}.answer.json`
-      );
+      const clientQuestionPath = FilePath.clientQuestionPath(savedPaper._id);
+      const clientAnswerPath = FilePath.clientAnswerPath(savedPaper._id);
       fs.writeFile(
         clientQuestionPath,
         JSON.stringify(clientPaper.questions),
@@ -118,26 +101,9 @@ const deletePaper = async (req, res) => {
   if (!paper) {
     return res.status(404).send("Paper not found");
   }
-  const filePath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    `${paper._id}.json`
-  );
-  const clientQuestionPath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    "client",
-    `${paper._id}.question.json`
-  );
-  const clientAnswerPath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    "client",
-    `${paper._id}.answer.json`
-  );
+  const filePath = FilePath.questionPaperPath(paper._id);
+  const clientQuestionPath = FilePath.clientQuestionPath(paper._id);
+  const clientAnswerPath = FilePath.clientAnswerPath(paper._id);
   await paper.remove();
   deleteAllImagesInPaper(filePath);
   fs.unlink(filePath, err => {});
@@ -168,30 +134,13 @@ const editPaper = async (req, res) => {
     paper.incompletes = incompleteQuestions;
     paper.isCompleted = isCompleted;
     await paper.save();
-    const filePath = path.join(
-      process.cwd(),
-      "resources",
-      "questionPapers",
-      `${paper._id}.json`
-    );
+    const filePath = FilePath.questionPaperPath(paper._id);
     deleteUpdatedPicsInPaper(filePath, questionPaperObj);
     fs.writeFile(filePath, JSON.stringify(questionPaperObj), err => {});
     if (isCompleted) {
       const clientPaper = getFinalClientPaper(questionPaperObj);
-      const clientQuestionPath = path.join(
-        process.cwd(),
-        "resources",
-        "questionPapers",
-        "client",
-        `${paper._id}.question.json`
-      );
-      const clientAnswerPath = path.join(
-        process.cwd(),
-        "resources",
-        "questionPapers",
-        "client",
-        `${paper._id}.answer.json`
-      );
+      const clientQuestionPath = FilePath.clientQuestionPath(paper._id);
+      const clientAnswerPath = FilePath.clientAnswerPath(paper._id);
       fs.writeFile(
         clientQuestionPath,
         JSON.stringify(clientPaper.questions),
@@ -225,12 +174,7 @@ const getPaper = async (req, res) => {
   if (!paper) {
     return res.status(404).send("Not found");
   }
-  const filePath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    `${paper._id}.json`
-  );
+  const filePath = FilePath.questionPaperPath(paper._id);
   if (fs.existsSync(filePath)) {
     const fileData = fs.readFileSync(filePath).toString();
     return res.json(JSON.parse(fileData));
@@ -282,12 +226,7 @@ const getReportsInQuestion = async (req, res) => {
   };
   const allReports = await PaperReport.find(findCriteria);
   const quiz = await QuestionPaper.findById(req.params.paperId);
-  const questionPath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    `${req.params.paperId}.json`
-  );
+  const questionPath = FilePath.questionPaperPath(req.params.paperId);
   if (!fs.existsSync(questionPath)) {
     return res.status(404).send("Question paper not found.");
   }
@@ -325,12 +264,7 @@ const resolveReports = async (req, res) => {
     return res.status(400).send("Report not found");
   }
   const quiz = await QuestionPaper.findById(req.params.paperId);
-  const questionPaperPath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    `${req.params.paperId}.json`
-  );
+  const questionPaperPath = FilePath.questionPaperPath(quiz._id);
   if (!quiz || !fs.existsSync(questionPaperPath)) {
     return res.status(404).send("Not found");
   }
@@ -353,20 +287,8 @@ const resolveReports = async (req, res) => {
   deleteUpdatedPicsInPaper(questionPaperPath, questionPaper);
   fs.writeFile(questionPaperPath, JSON.stringify(questionPaper), err => {});
   const clientPaper = getFinalClientPaper(questionPaper);
-  const clientQuestionPath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    "client",
-    `${quiz._id}.question.json`
-  );
-  const clientAnswerPath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    "client",
-    `${quiz._id}.answer.json`
-  );
+  const clientQuestionPath = FilePath.clientQuestionPath(quiz._id);
+  const clientAnswerPath = FilePath.clientAnswerPath(quiz._id);
   fs.writeFile(
     clientQuestionPath,
     JSON.stringify(clientPaper.questions),

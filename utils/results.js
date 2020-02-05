@@ -1,8 +1,8 @@
-const path = require("path");
 const fs = require("fs");
+const FilePath = require("./filePaths");
 const searchStudents = (searchQuery, max = null, infoScope = "name") => {
   searchQuery = searchQuery.toLowerCase();
-  const resultFilePath = path.join(process.cwd(), "resources", "result.json");
+  const resultFilePath = FilePath.resultPath();
   //get array of results
   const resultData = JSON.parse(fs.readFileSync(resultFilePath).toString());
   const searchResults = [];
@@ -10,7 +10,11 @@ const searchStudents = (searchQuery, max = null, infoScope = "name") => {
     const studentName = singleStudRes.name;
     //1st priority search results if student name starts with search keyword
     if (studentName.toLowerCase().startsWith(searchQuery)) {
-      searchResults.push(infoScope === "name" ? {name:studentName,rollNo:singleStudRes.rollNo} : singleStudRes);
+      searchResults.push(
+        infoScope === "name"
+          ? { name: studentName, rollNo: singleStudRes.rollNo }
+          : singleStudRes
+      );
       if (max && searchResults.length === max) {
         return searchResults;
       }
@@ -23,7 +27,11 @@ const searchStudents = (searchQuery, max = null, infoScope = "name") => {
       studentName.toLowerCase().indexOf(searchQuery) !== 0 &&
       studentName.toLowerCase().indexOf(searchQuery) !== -1
     ) {
-      searchResults.push(infoScope === "name" ? {name:studentName,rollNo:singleStudRes.rollNo} : singleStudRes);
+      searchResults.push(
+        infoScope === "name"
+          ? { name: studentName, rollNo: singleStudRes.rollNo }
+          : singleStudRes
+      );
       if (max && searchResults.length === max) {
         return searchResults;
       }

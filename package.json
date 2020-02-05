@@ -29,5 +29,10 @@
   "devDependencies": {
     "morgan": "^1.9.1"
   },
-  "nodemonConfig": {}
+  "nodemonConfig": {
+    "ignore": [
+      "resources/*",
+      "client/*"
+    ]
+  }
 }

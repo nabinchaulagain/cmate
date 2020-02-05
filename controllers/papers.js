@@ -1,6 +1,6 @@
 const QuestionPaper = require("../models/QuestionPaper");
 const fs = require("fs");
-const path = require("path");
+const FilePath = require("../utils/filePaths");
 const mongoose = require("mongoose");
 const QuizResults = require("../models/QuizResults");
 const QuizProgress = require("../models/Progress");
@@ -31,13 +31,7 @@ const getPaper = async (req, res) => {
   if (!paper) {
     return res.status(404).send("Not found");
   }
-  const filePath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    "client",
-    `${paper._id}.question.json`
-  );
+  const filePath = FilePath.clientQuestionPath(paper._id);
   if (fs.existsSync(filePath)) {
     const fileData = fs.readFileSync(filePath).toString();
     const response = { questions: JSON.parse(fileData), title: paper.title };
@@ -63,13 +57,7 @@ const getAnswer = async (req, res) => {
   if (!paper) {
     return res.status(404).send("Not found");
   }
-  const filePath = path.join(
-    process.cwd(),
-    "resources",
-    "questionPapers",
-    "client",
-    `${paper._id}.answer.json`
-  );
+  const filePath = FilePath.clientAnswerPath(paper._id);
   if (fs.existsSync(filePath)) {
     const fileData = fs.readFileSync(filePath).toString();
     return res.json(JSON.parse(fileData));
@@ -98,13 +86,7 @@ const saveQuizResult = async (req, res) => {
     let rightAnswers = 0;
     const recievedAnswers = req.body.answers;
     const answers = {};
-    const answerPath = path.join(
-      process.cwd(),
-      "resources",
-      "questionPapers",
-      "client",
-      `${questionPaper._id}.answer.json`
-    );
+    const answerPath = FilePath.clientAnswerPath(questionPaper._id);
     const existingResult = await QuizResults.findOne({
       questionPaperId: new mongoose.Types.ObjectId(questionPaper._id),
       "user._id": new mongoose.Types.ObjectId(req.user._id)
