@@ -1,5 +1,6 @@
 import React from "react";
 import formatQuestion from "../../utils/formatQuestion";
+import ReportQuestion from "./ReportQuestion";
 const SingleQuestion = ({
   question,
   answer,
@@ -17,10 +18,13 @@ const SingleQuestion = ({
       {questionNum && (
         <h6 className="text-center">Question No. {questionNum}</h6>
       )}
+      <div className="text-right">
+        <ReportQuestion questionNum={questionNum || store.questionNum} />
+      </div>
       <Direction direction={question.direction} />
       <h5
         dangerouslySetInnerHTML={{ __html: formatQuestion(question.question) }}
-        className="text-left col-11 mr-4 mx-auto mt-3"
+        className="text-left col-11 mr-4 mx-auto"
       ></h5>
       {question.directionImage && (
         <img

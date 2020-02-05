@@ -109,6 +109,7 @@ input[type="number"] {
   border-bottom: 2px solid rgba(255, 255, 255, 1) !important;
   background: inherit !important;
   color: rgba(255, 255, 255, 1) !important;
+  outline: none !important;
 }
 @media only screen and (max-width: 767px) {
   #profile-dropdown {
