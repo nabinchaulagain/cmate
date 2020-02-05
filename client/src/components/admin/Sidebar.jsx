@@ -11,17 +11,17 @@ const Sidebar = () => {
       <ul id="sidebar-list">
         <li>
           <Link to="/admin/">
+            <MdReportProblem /> Reports
+          </Link>
+        </li>
+        <li>
+          <Link to="/admin/quizzes">
             <IoIosPaper /> Question Papers
           </Link>
         </li>
         <li>
           <Link to="/admin/uploadPaper">
             <MdAdd /> Add New Question Paper
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/reports">
-            <MdReportProblem /> Reports
           </Link>
         </li>
       </ul>

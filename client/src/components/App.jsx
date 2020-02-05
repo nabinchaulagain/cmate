@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./Navbar";
 import "../App.css";
-import AdminPanel from "./admin/AdminPanel";
+import QuestionPapers from "./admin/QuestionPapers";
 import AddPaper from "./admin/AddPaper";
 import Results from "./results/";
 import FlashMessage from "./extras/FlashMessage";
@@ -37,10 +37,10 @@ const App = () => {
         <Route path="/" component={() => <h1>Home component</h1>} exact />
         <Route path="/results" component={Results} exact />
         <Route path="/quizzes" component={Quizzes} />
-        <Route path="/admin" component={AdminPanel} exact />
+        <Route path="/admin" component={Reports} exact />
         <Route path="/admin/uploadPaper" component={AddPaper} exact />
         <Route path="/admin/editPaper/:id" component={EditPaper} exact />
-        <Route path="/admin/reports" component={Reports} exact />
+        <Route path="/admin/quizzes" component={QuestionPapers} exact />
         <Route
           path="/admin/resolve/:paperId/:questionNum"
           component={ResolveReports}
