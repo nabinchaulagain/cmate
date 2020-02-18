@@ -36,7 +36,7 @@ app.use("/images", express.static("resources/images"));
 app.use(errorHandler);
 
 mongoose
-  .connect("mongodb+srv://nabin1:pword@cluster0-eumyn.mongodb.net/cmate", {
+  .connect(secrets.DB_CONN_STR, {
     useUnifiedTopology: true,
     useNewUrlParser: true
   })
