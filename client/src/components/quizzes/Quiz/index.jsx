@@ -2,7 +2,6 @@ import React from "react";
 import QuizProvider from "./QuizProvider";
 import Quiz from "./Quiz";
 import axios from "axios";
-import renderLoading from "../../extras/renderLoading";
 export default props => {
   const [initialValues, setInitialValues] = React.useState("unset");
   const [showQuiz, setShowQuiz] = React.useState(false);
@@ -14,7 +13,7 @@ export default props => {
         setInitialValues({ timeRemaining: 5400, answers: {} });
         setShowQuiz(true);
       });
-  }, []);
+  }, [props]);
   if (initialValues !== "unset") {
     if (showQuiz) {
       return (

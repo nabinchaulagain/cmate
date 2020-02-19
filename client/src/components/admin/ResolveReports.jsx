@@ -32,7 +32,7 @@ const ResolveReports = props => {
       }
     };
     initializeState();
-  }, []);
+  }, [props, state]);
   if (Object.keys(state.initialValues.options).length === 4) {
     return (
       <div className="mt-3 mb-2">

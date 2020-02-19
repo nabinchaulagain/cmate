@@ -17,7 +17,7 @@ const QuizResult = props => {
       setAnswerSheet(quizRes.data);
       setQuestionPaper(quizQuestions.data);
     });
-  }, []);
+  }, [props]);
   React.useEffect(() => {
     if (
       questionPaper !== "unset" &&

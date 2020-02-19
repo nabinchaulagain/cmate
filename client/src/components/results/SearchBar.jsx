@@ -5,19 +5,22 @@ import AutoComplete from "./AutoComplete";
 import axios from "axios";
 const SearchBar = () => {
   const ctx = useContext(ResultContext);
-  const hideAutoComplete = useCallback(event => {
-    if (
-      !document.querySelector('input[type="search"]').contains(event.target)
-    ) {
-      ctx.setShowAutoComplete(false);
-    }
-  });
+  const hideAutoComplete = useCallback(
+    event => {
+      if (
+        !document.querySelector('input[type="search"]').contains(event.target)
+      ) {
+        ctx.setShowAutoComplete(false);
+      }
+    },
+    [ctx]
+  );
   useEffect(() => {
     document.addEventListener("click", hideAutoComplete);
     return () => {
       document.removeEventListener("click", hideAutoComplete);
     };
-  }, []);
+  }, [hideAutoComplete]);
   return (
     <form
       onSubmit={event => {

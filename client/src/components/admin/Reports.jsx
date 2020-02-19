@@ -39,6 +39,8 @@ const ReportList = ({ reports }) => {
             key={paperId + questionNum}
           />
         );
+      } else {
+        return null;
       }
     });
   });

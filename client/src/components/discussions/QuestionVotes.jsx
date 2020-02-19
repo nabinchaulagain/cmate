@@ -29,7 +29,7 @@ const VoteActions = ({ user, votes, questionId }) => {
     } else {
       setVoteState(null);
     }
-  }, [votes]);
+  }, [votes, user]);
   return (
     <React.Fragment>
       <FaThumbsUp

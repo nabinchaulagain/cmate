@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Modal from "../extras/Modal";
 import QuestionModal from "./QuestionModal";
 import { useSelector, useDispatch } from "react-redux";

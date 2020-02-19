@@ -25,7 +25,6 @@ const ModalComp = props => {
       <Modal
         show={isModalActive}
         onHide={() => setModalActive(false)}
-        className={props.modalClass}
         size={props.size || "md"}
         className={props.className}
       >

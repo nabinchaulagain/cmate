@@ -19,7 +19,7 @@ const EditPaper = props => {
       }
     };
     getAndSetInitialState();
-  }, []);
+  }, [props]);
   if (!initialValues) {
     return <React.Fragment>{renderLoading("Loading ....")}</React.Fragment>;
   }

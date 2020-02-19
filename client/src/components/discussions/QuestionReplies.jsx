@@ -13,7 +13,7 @@ const QuestionReplies = ({ id }) => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   React.useEffect(() => {
     dispatch(getQuestionReplies(id));
-  }, []);
+  }, [dispatch, id]);
   if (!replies) {
     return renderLoading("Loading Replies................");
   }
@@ -55,7 +55,7 @@ const QuestionReply = ({ reply }) => {
                 <div className="col-4" key={image}>
                   <img
                     src={`/images/${image}`}
-                    alt="reply image"
+                    alt="reply"
                     style={{ width: "90%" }}
                   />
                 </div>

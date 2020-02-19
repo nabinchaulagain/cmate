@@ -53,6 +53,7 @@ const filterResults = (results, pageNum) => {
     if (index + 1 <= pageNum * 10 && index + 1 >= pageNum * 10 - 10) {
       return true;
     }
+    return false;
   });
 };
 const renderPagination = (pageNum, items, setPageNum) => {

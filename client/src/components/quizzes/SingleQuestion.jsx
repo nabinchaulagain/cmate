@@ -30,10 +30,15 @@ const SingleQuestion = ({
         <img
           src={`/images/${question.directionImage}`}
           style={{ width: "100%" }}
+          alt="Direction"
         />
       )}
       {question.image && (
-        <img src={`/images/${question.image}`} style={{ width: "100%" }} />
+        <img
+          src={`/images/${question.image}`}
+          style={{ width: "100%" }}
+          alt="Question"
+        />
       )}
       <div className="row col-12 mx-auto">
         {!answer && (

@@ -13,7 +13,7 @@ const DiscussionsHome = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getQuestions());
-  }, [getQuestions, dispatch]);
+  }, [dispatch]);
   React.useEffect(() => {
     let fetched = false;
     const scrollHandler = () => {
@@ -24,7 +24,7 @@ const DiscussionsHome = () => {
         lastQuestion.offsetTop + lastQuestion.clientHeight <
         window.pageYOffset + window.innerHeight
       ) {
-        if (currPage != nextPage && !fetched) {
+        if (currPage !== nextPage && !fetched) {
           dispatch(getQuestions(nextPage));
           fetched = true;
         }
@@ -32,7 +32,7 @@ const DiscussionsHome = () => {
     };
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
-  }, [questions]);
+  }, [questions, currPage, dispatch, nextPage]);
   if (!questions) {
     return renderLoading("Loading questions.....");
   }

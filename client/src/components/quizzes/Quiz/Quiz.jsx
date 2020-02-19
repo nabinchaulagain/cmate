@@ -6,6 +6,7 @@ import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Checkbox from "../../extras/Checkbox";
 import QuizTimer from "./QuizTimer";
 import Modal from "../../extras/Modal";
+
 const Quiz = () => {
   const { store, actions } = useContext(QuizContext);
   if (!store.questionPaper || !store.title) {

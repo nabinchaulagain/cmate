@@ -128,6 +128,7 @@ const renderSubmitComponent = (questions, type, id, dispatch) => {
 const Player = props => {
   const [activeNumber, setActiveNum] = useState(props.questionNum);
   const [isActive, setIsActive] = useState(false);
+  const { setQuestionNum } = props;
   useEffect(() => {
     let isSubscribed = true;
     if (activeNumber === 100) {
@@ -136,13 +137,13 @@ const Player = props => {
     if (isActive && activeNumber !== 100) {
       setTimeout(() => {
         if (isSubscribed && isActive) {
-          props.setQuestionNum(activeNumber + 1);
+          setQuestionNum(activeNumber + 1);
           setActiveNum(activeNumber + 1);
         }
       }, 2000);
     }
     return () => (isSubscribed = false);
-  }, [isActive, activeNumber]);
+  }, [isActive, activeNumber, setQuestionNum]);
   useEffect(() => {
     setActiveNum(props.questionNum);
   }, [props.questionNum]);

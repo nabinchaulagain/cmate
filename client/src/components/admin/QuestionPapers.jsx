@@ -25,7 +25,7 @@ const AdminHome = () => {
     if ((currentPage - 1) * 4 >= questions.length) {
       setCurrentPage(currentPage - 1);
     }
-  }, [questions.length]);
+  }, [questions.length, currentPage]);
   return (
     <div className="row">
       <Sidebar />

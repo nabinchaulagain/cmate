@@ -12,12 +12,15 @@ const QuizProvider = props => {
   const [answers, setAnswers] = useState(props.initialValues.answers);
   const [skipOnAnswer, setSkipOnAnswer] = useState(true);
   const [time, setTime] = useState(props.initialValues.timeRemaining);
-  const setAnswer = React.useCallback((qn, ansNo) => {
-    setAnswers({ ...answers, [qn]: ansNo });
-    if (qn !== 100 && skipOnAnswer) {
-      setQuestionNum(qn + 1);
-    }
-  });
+  const setAnswer = React.useCallback(
+    (qn, ansNo) => {
+      setAnswers({ ...answers, [qn]: ansNo });
+      if (qn !== 100 && skipOnAnswer) {
+        setQuestionNum(qn + 1);
+      }
+    },
+    [answers, skipOnAnswer]
+  );
   const saveProgress = React.useCallback(async () => {
     await axios.put("/api/saveQuizProgress", {
       timeRemaining: time,
@@ -25,7 +28,7 @@ const QuizProvider = props => {
       questionPaperId: props.quizId
     });
     history.push("/");
-  });
+  }, [answers, props, time]);
   const finishQuiz = React.useCallback(async () => {
     await axios.post("/api/saveQuizResult", {
       questionPaperId: props.quizId,
@@ -33,7 +36,7 @@ const QuizProvider = props => {
       answers
     });
     history.push(`/quizResult/${props.quizId}`);
-  });
+  }, [props.quizId, answers, time]);
   useEffect(() => {
     const initQuestionPaper = async () => {
       try {
@@ -46,7 +49,7 @@ const QuizProvider = props => {
       }
     };
     initQuestionPaper();
-  }, []);
+  }, [props.quizId]);
   useEffect(() => {
     let isSubscribed = true;
     if (time !== 0) {
@@ -60,9 +63,8 @@ const QuizProvider = props => {
         finishQuiz();
       }
     }
-
     return () => (isSubscribed = false);
-  }, [time]);
+  }, [time, finishQuiz]);
   return (
     <QuizContext.Provider
       value={{

@@ -18,7 +18,7 @@ const renderRecommendations = (students, setQuery, query, setSearchResults) => {
   if (students && students.length !== 0) {
     return students.map(student => {
       if (!student.name || !student.rollNo) {
-        return;
+        return null;
       }
       const highlightedIndex = student.name.search(new RegExp(query));
       return (

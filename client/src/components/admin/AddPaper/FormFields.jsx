@@ -14,7 +14,7 @@ const FieldsComp = props => {
     if (!hasImage) {
       props.setImageInState(null);
     }
-  }, [hasImage]);
+  }, [hasImage, props]);
   //checkboxes for options for directions and image
   //actual Fields Component
   return (
