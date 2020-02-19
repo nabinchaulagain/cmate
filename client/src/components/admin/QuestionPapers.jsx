@@ -29,8 +29,11 @@ const AdminHome = () => {
   return (
     <div className="row">
       <Sidebar />
-      <div className="jumbotron col-9 p-0" style={{ height: "100vh" }}>
-        <h2 className="text-center">Question Papers</h2>
+      <div
+        className="jumbotron col-md-9 col-8 mb-0 p-0"
+        style={{ height: "100vh" }}
+      >
+        <h2 className="text-center mt-1">Question Papers</h2>
         {//render list of questions in current page
         Array.isArray(questions) &&
           renderQuestionPaperList(

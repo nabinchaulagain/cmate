@@ -61,6 +61,7 @@ a.card:hover {
   #sidebar-list a {
     font-size: 110%;
   }
+
   form[enctype="multipart/form-data"] * {
     font-size: 95%;
   }
@@ -72,6 +73,19 @@ a.card:hover {
     font-size: 50%;
     width: 24px;
     height: 24px;
+  }
+  .jumbotron * {
+    font-size: 95%;
+  }
+  .jumbotron h2 {
+    font-size: 140%;
+  }
+  .jumbotron h5 {
+    font-size: 120%;
+  }
+  .jumbotron .btn {
+    padding: 4px;
+    font-size: 75%;
   }
 }
 
@@ -93,5 +107,18 @@ a.card:hover {
     font-size: 45%;
     width: 20px;
     height: 20px;
+  }
+  .jumbotron * {
+    font-size: 85%;
+  }
+  .jumbotron h2 {
+    font-size: 120%;
+  }
+  .jumbotron h5 {
+    font-size: 110%;
+  }
+  .jumbotron .btn {
+    padding: 4px;
+    font-size: 75%;
   }
 }
