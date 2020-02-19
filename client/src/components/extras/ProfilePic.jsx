@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { GoVerified } from "react-icons/go";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 const ProfilePic = props => {
   const [isOpen, setOpen] = useState(false);
   const picRef = useRef(null);
@@ -44,12 +45,9 @@ const ProfilePic = props => {
             </h5>
             <small style={{ fontSize: "70%" }}>{props.email}</small>
           </li>
-          <li>
-            <a href="">Profile</a>
-          </li>
           {props.isAdmin && (
             <li>
-              <a href="">Admin Panel</a>
+              <Link to="/admin">Admin Panel</Link>
             </li>
           )}
           <li>

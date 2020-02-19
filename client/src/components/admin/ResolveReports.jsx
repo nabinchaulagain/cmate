@@ -176,7 +176,7 @@ const handleSubmit = async (
       `/api/admin/resolveReports/${paperId}?questionNum=${questionNum}`,
       requestBody
     );
-    history.push("/admin/reports");
+    history.push("/admin");
     flashMessage(dispatch, "Report resolved");
   }
 };

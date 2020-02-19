@@ -21,8 +21,10 @@ const Navbar = props => {
       variant="dark"
       className="navbar"
     >
-      <BSNavbar.Brand href="/" style={{ fontSize: "160%" }}>
-        C-Mate
+      <BSNavbar.Brand>
+        <Link to="/" className="nav-link mr-0 p-0">
+          Cmate
+        </Link>
       </BSNavbar.Brand>
       <BSNavbar.Toggle aria-controls="responsive-navbar-nav" />
       <BSNavbar.Collapse id="responsive-navbar-nav">
