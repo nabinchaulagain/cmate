@@ -1,22 +1,13 @@
 import React, { useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./Navbar";
 import "../App.css";
-import QuestionPapers from "./admin/QuestionPapers";
-import AddPaper from "./admin/AddPaper";
-import Results from "./results/";
-import FlashMessage from "./extras/FlashMessage";
 import { removeFlashMessage } from "../actions/flashMessage";
-import EditPaper from "./admin/EditPaper";
-import Reports from "./admin/Reports";
-import ResolveReports from "./admin/ResolveReports";
-import Quizzes from "./quizzes/QuizzesHome";
+import FlashMessage from "./extras/FlashMessage";
 import history from "../history";
-import Quiz from "./quizzes/Quiz/index";
-import QuizResults from "./quizzes/Results/QuizResult";
-import DiscussionsHome from "./discussions/DiscussionsHome";
+import Routes from "./Routes";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,21 +25,7 @@ const App = () => {
         <FlashMessage msg={flashMessage.flashMessage} />
       )}
       <Switch>
-        <Route path="/" component={() => <h1>Home component</h1>} exact />
-        <Route path="/results" component={Results} exact />
-        <Route path="/quizzes" component={Quizzes} />
-        <Route path="/admin" component={Reports} exact />
-        <Route path="/admin/uploadPaper" component={AddPaper} exact />
-        <Route path="/admin/editPaper/:id" component={EditPaper} exact />
-        <Route path="/admin/quizzes" component={QuestionPapers} exact />
-        <Route
-          path="/admin/resolve/:paperId/:questionNum"
-          component={ResolveReports}
-          exact
-        />
-        <Route path="/quiz/:id" component={Quiz} exact />
-        <Route path="/quizResult/:id" component={QuizResults} exact />
-        <Route path="/discussions" component={DiscussionsHome} exact />
+        <Routes />
       </Switch>
     </div>
   );

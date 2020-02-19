@@ -12,7 +12,7 @@ const paperRoutes = require("./routes/papers");
 const resultRoutes = require("./routes/results");
 const discussionRoutes = require("./routes/discussions");
 const errorHandler = require("./middlewares/errorHandler");
-
+const adminIdentifier = require("./middlewares/adminIdentifier");
 require("./models/User");
 
 const app = express();
@@ -24,9 +24,9 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(configuredPassport.initialize());
 app.use(configuredPassport.session());
+app.use(adminIdentifier);
 app.use("/api/admin", isAuthenticated, isAdmin, adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", paperRoutes);
