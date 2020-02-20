@@ -20,7 +20,7 @@ const renderRecommendations = (students, setQuery, query, setSearchResults) => {
       if (!student.name || !student.rollNo) {
         return null;
       }
-      const highlightedIndex = student.name.search(new RegExp(query));
+      const highlightedIndex = student.name.search(new RegExp(query, "i"));
       return (
         <StudentListElem
           key={student.rollNo}
