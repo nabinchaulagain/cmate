@@ -5,10 +5,15 @@ import { useSelector } from "react-redux";
 import Modal from "../extras/Modal";
 import "./quizzes.css";
 import { TiSocialGooglePlus } from "react-icons/ti";
+import { Helmet } from "react-helmet";
 
 const QuizzesHome = () => {
   return (
     <div className="col-sm-9 mx-auto mt-2">
+      <Helmet>
+        <title>Quizzes - Cmate</title>
+        <meta name="description" content="Cmate Homepage" />
+      </Helmet>
       <h3 className="text-center">Browse all the quizzes</h3>
       <QuizList />
     </div>

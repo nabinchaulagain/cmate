@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import flashMessage from "../../utils/flashMessage";
 import renderLoading from "../extras/renderLoading";
+import { Helmet } from "react-helmet";
 const AdminHome = () => {
   const [questions, setQuestions] = useState("unset");
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,9 @@ const AdminHome = () => {
   }, [questions.length, currentPage]);
   return (
     <div className="row">
+      <Helmet>
+        <title>Question papers - Cmate</title>
+      </Helmet>
       <Sidebar />
       <div
         className="admin-sidebar col-md-9 col-8 mb-0 p-0"

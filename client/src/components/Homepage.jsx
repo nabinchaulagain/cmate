@@ -1,9 +1,14 @@
 import React from "react";
 import homePageBackground from "../assets/homebackground.jpg";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 const Homepage = () => {
   return (
     <div>
+      <Helmet>
+        <title>Cmate</title>
+        <meta name="description" content="Cmate Homepage" />
+      </Helmet>
       <div
         className="mt-2 col-11 mx-auto"
         style={{
@@ -49,7 +54,7 @@ const Homepage = () => {
 const ServiceCard = ({ title, description, linkBtn }) => {
   return (
     <div
-      className="col-lg-3 col-md-7 col-9 mx-auto mr-3 mb-2 pb-4 pt-2"
+      className="col-md-3 col-sm-7 col-9 mx-auto mr-3 mb-2 pb-4 pt-2"
       style={{ background: "#f0f1f2", border: "none", borderRadius: 5 }}
     >
       <h4 className="text-center">{title}</h4>

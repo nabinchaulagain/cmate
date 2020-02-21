@@ -7,6 +7,7 @@ import { validate } from "./AddPaper/QuestionForm";
 import flashMessage from "../../utils/flashMessage";
 import { useDispatch } from "react-redux";
 import history from "../../history";
+import { Helmet } from "react-helmet";
 const ResolveReports = props => {
   const [state, setState] = React.useState({
     initialValues: { options: {} },
@@ -36,6 +37,9 @@ const ResolveReports = props => {
   if (Object.keys(state.initialValues.options).length === 4) {
     return (
       <div className="mt-3 mb-2">
+        <Helmet>
+          <title>{`Resolve ${state.reports.length} Reports - Cmate`}</title>
+        </Helmet>
         <h2 className="text-center col-12">
           Resolve {state.reports.length} Reports
         </h2>

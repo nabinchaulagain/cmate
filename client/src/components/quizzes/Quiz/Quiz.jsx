@@ -7,6 +7,7 @@ import Checkbox from "../../extras/Checkbox";
 import QuizTimer from "./QuizTimer";
 import Modal from "../../extras/Modal";
 import QuizSection from "../QuizSection";
+import { Helmet } from "react-helmet";
 
 const Quiz = () => {
   const { store, actions } = useContext(QuizContext);
@@ -15,6 +16,10 @@ const Quiz = () => {
   }
   return (
     <React.Fragment>
+      <Helmet>
+        <title>{store.title} - Cmate</title>
+        <meta name="description" content={`CMAT Mock test -  ${store.title}`} />
+      </Helmet>
       <div className="ml-4 mt-1 col-lg-8 col-12 mx-auto">
         <h4 className="text-center">{store.title}</h4>
         <div className="text-right mb-2">

@@ -1,9 +1,18 @@
-import React from 'react';
+import React from "react";
 import PaperForm from "./PaperForm";
-//function for inital state of questions
-const AddPaper= ()=>{
-  return <PaperForm initialQuestions={getQuestionsObj()} type="add"/>;
-}
+import { Helmet } from "react-helmet";
+
+const AddPaper = () => {
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>Add a paper - Cmate</title>
+        <meta name="description" content="Cmate Homepage" />
+      </Helmet>
+      <PaperForm initialQuestions={getQuestionsObj()} type="add" />
+    </React.Fragment>
+  );
+};
 
 const getQuestionsObj = () => {
   const questions = {};

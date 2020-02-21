@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import renderLoading from "../extras/renderLoading";
 import QuestionCard from "./QuestionCard";
 import QuestionForm from "./QuestionForm";
+import { Helmet } from "react-helmet";
 const DiscussionsHome = () => {
   const { questions, serverError, nextPage, currPage } = useSelector(
     state => state.discussions
@@ -38,6 +39,10 @@ const DiscussionsHome = () => {
   }
   return (
     <div className="col-md-7 col-sm-9 mt-2 mx-auto">
+      <Helmet>
+        <title>Discussions - Cmate</title>
+        <meta name="description" content="Discussion about CMAT Exam" />
+      </Helmet>
       {isLoggedIn && !showAddForm && (
         <div className="text-right mb-2">
           <button

@@ -4,6 +4,7 @@ import renderLoading from "../../extras/renderLoading";
 import SingleQuestion from "../SingleQuestion";
 import { convertTime } from "../../../utils/time";
 import QuizSection from "../QuizSection";
+import { Helmet } from "react-helmet";
 const QuizResult = props => {
   //questions and title
   const [questionPaper, setQuestionPaper] = React.useState("unset");
@@ -80,6 +81,13 @@ const QuizResult = props => {
         paddingBottom: "2%"
       }}
     >
+      <Helmet>
+        <title>Result for {questionPaper.title} - Cmate</title>
+        <meta
+          name="description"
+          content={`Result for ${questionPaper.title}`}
+        />
+      </Helmet>
       <h3 className="text-center">Your Result for {questionPaper.title}</h3>
       <h4 className="text-center">
         Finished in {hours}:{minutes}:{seconds}

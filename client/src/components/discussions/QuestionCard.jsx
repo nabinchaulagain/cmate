@@ -63,7 +63,12 @@ const QuestionCard = ({
           </div>
         }
         modalBody={
-          <QuestionModal description={description} images={images} id={id} />
+          <QuestionModal
+            description={description}
+            images={images}
+            id={id}
+            title={question}
+          />
         }
       />
       <QuestionActions

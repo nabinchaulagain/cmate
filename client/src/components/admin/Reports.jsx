@@ -3,7 +3,8 @@ import SideBar from "./Sidebar";
 import axios from "axios";
 import { ProfilePicReusable } from "../extras/ProfilePic";
 import { Link } from "react-router-dom";
-const Reports = props => {
+import { Helmet } from "react-helmet";
+const Reports = () => {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {
     const initializeState = async () => {
@@ -12,9 +13,11 @@ const Reports = props => {
     };
     initializeState();
   }, []);
-  console.log(data);
   return (
     <div className="row">
+      <Helmet>
+        <title>Reports - Cmate</title>
+      </Helmet>
       <SideBar />
       {data !== null && (
         <div
