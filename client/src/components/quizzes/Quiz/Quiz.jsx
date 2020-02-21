@@ -6,6 +6,7 @@ import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Checkbox from "../../extras/Checkbox";
 import QuizTimer from "./QuizTimer";
 import Modal from "../../extras/Modal";
+import QuizSection from "../QuizSection";
 
 const Quiz = () => {
   const { store, actions } = useContext(QuizContext);
@@ -14,8 +15,8 @@ const Quiz = () => {
   }
   return (
     <React.Fragment>
-      <div className="ml-4 mt-2 col-lg-8 col-12 mx-auto">
-        <h2 className="text-center">{store.title}</h2>
+      <div className="ml-4 mt-1 col-lg-8 col-12 mx-auto">
+        <h4 className="text-center">{store.title}</h4>
         <div className="text-right mb-2">
           <QuizTimer />
           <Checkbox
@@ -27,8 +28,8 @@ const Quiz = () => {
         </div>
         <QuestionNumberDisplayer />
       </div>
-      <div className="mt-3">
-        <h4 className="text-center">Question Number {store.questionNum}</h4>
+      <div className="mt-1">
+        <QuizSection questionNum={store.questionNum} />
         {allQuestions(store.questionPaper).filter(
           question => parseInt(question.key) === store.questionNum
         )}

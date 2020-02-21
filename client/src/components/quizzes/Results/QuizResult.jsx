@@ -3,6 +3,7 @@ import axios from "axios";
 import renderLoading from "../../extras/renderLoading";
 import SingleQuestion from "../SingleQuestion";
 import { convertTime } from "../../../utils/time";
+import QuizSection from "../QuizSection";
 const QuizResult = props => {
   //questions and title
   const [questionPaper, setQuestionPaper] = React.useState("unset");
@@ -57,6 +58,7 @@ const QuizResult = props => {
     }
     allQuestions.push(
       <div key={i} className="col-md-9 col-12 mx-auto mb-1 singleQues">
+        {(i - 1) % 25 === 0 && <QuizSection questionNum={i} />}
         <SingleQuestion
           question={questionPaper.questions[i]}
           answer={answerSheet.answers[i]}

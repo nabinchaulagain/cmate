@@ -1,7 +1,8 @@
 .quiz-card {
-  background: rgb(171, 171, 172);
+  background: rgb(231, 231, 233);
   padding: 10px 2%;
   color: black;
+  border-radius: 5px;
 }
 
 .questionNumBtn {
