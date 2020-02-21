@@ -16,6 +16,6 @@ const getAuthStatus = (req, res) => {
 
 const logout = (req, res) => {
   req.logout();
-  res.redirect("http://localhost:3000");
+  res.redirect(req.headers.referer || "/");
 };
 module.exports = { getAuthStatus, logout };
