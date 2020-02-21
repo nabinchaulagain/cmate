@@ -30,7 +30,7 @@ const AdminHome = () => {
     <div className="row">
       <Sidebar />
       <div
-        className="jumbotron col-md-9 col-8 mb-0 p-0"
+        className="admin-sidebar col-md-9 col-8 mb-0 p-0"
         style={{ height: "100vh" }}
       >
         <h2 className="text-center mt-1">Question Papers</h2>

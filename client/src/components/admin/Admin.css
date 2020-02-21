@@ -74,16 +74,17 @@ a.card:hover {
     width: 24px;
     height: 24px;
   }
-  .jumbotron * {
+  /* E9ECEF */
+  .admin-sidebar * {
     font-size: 95%;
   }
-  .jumbotron h2 {
+  .admin-sidebar h2 {
     font-size: 140%;
   }
-  .jumbotron h5 {
+  .admin-sidebar h5 {
     font-size: 120%;
   }
-  .jumbotron .btn {
+  .admin-sidebar .btn {
     padding: 4px;
     font-size: 75%;
   }
@@ -108,17 +109,18 @@ a.card:hover {
     width: 20px;
     height: 20px;
   }
-  .jumbotron * {
+  .admin-sidebar * {
     font-size: 85%;
   }
-  .jumbotron h2 {
+  .admin-sidebar h2 {
     font-size: 120%;
   }
-  .jumbotron h5 {
+  .admin-sidebar h5 {
     font-size: 110%;
   }
-  .jumbotron .btn {
-    padding: 4px;
-    font-size: 75%;
+  .admin-sidebar .btn {
+    padding: 2px;
+    margin-right: 2px !important;
+    font-size: 70%;
   }
 }

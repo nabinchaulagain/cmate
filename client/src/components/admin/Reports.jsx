@@ -17,7 +17,10 @@ const Reports = props => {
     <div className="row">
       <SideBar />
       {data !== null && (
-        <div className="col-9 mb-0" style={{ background: "#ededed" }}>
+        <div
+          className="col-md-9 col-8 mb-0 admin-sidebar"
+          style={{ background: "#ededed" }}
+        >
           <h2 className="text-center mt-2">Reports</h2>
           <h5 className="text-left">{data.totalReports} Total Reports</h5>
           <ReportList reports={data.reports} />

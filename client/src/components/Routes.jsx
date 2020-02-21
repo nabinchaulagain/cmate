@@ -11,11 +11,12 @@ import Quizzes from "./quizzes/QuizzesHome";
 import Quiz from "./quizzes/Quiz/index";
 import QuizResults from "./quizzes/Results/QuizResult";
 import DiscussionsHome from "./discussions/DiscussionsHome";
+import Homepage from "./Homepage";
 const Routes = () => {
   const { isLoggedIn, user } = useSelector(state => state.auth);
   return (
     <React.Fragment>
-      <Route path="/" component={() => <h1>Home component</h1>} exact />
+      <Route path="/" component={Homepage} exact />
       <Route path="/results" component={Results} exact />
       <Route path="/quizzes" component={Quizzes} />
       {isLoggedIn && user && user.isAdmin === true && (
