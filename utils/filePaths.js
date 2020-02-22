@@ -25,6 +25,9 @@ class FilePath {
   static resultPath() {
     return path.join(this.basePath, "result.json");
   }
+  static clientBuildPath() {
+    return path.join(this.basePath, "client", "build", "index.html");
+  }
 }
 FilePath.basePath = path.join(process.cwd(), "resources");
 

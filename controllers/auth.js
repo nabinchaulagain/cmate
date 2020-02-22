@@ -36,7 +36,6 @@ const getProfile = async (req, res, next) => {
       { questionPaperId: 1, "performance.rightAnswers": 1 }
     ).populate("questionPaperId");
     const resultsMin = results.map(result => {
-      console.log(result.questionPaperId);
       return {
         questionPaper: result.questionPaperId.title,
         correctAnswers: result.performance.rightAnswers,

@@ -13,12 +13,14 @@ const resultRoutes = require("./routes/results");
 const discussionRoutes = require("./routes/discussions");
 const errorHandler = require("./middlewares/errorHandler");
 const adminIdentifier = require("./middlewares/adminIdentifier");
+const FilePath = require("./utils/filePaths");
+
 require("./models/User");
 
 const app = express();
 app.use(
   cookieSession({
-    maxAge: 1000 * 60 * 60 * 24 * 3,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
     keys: secrets.COOKIE_KEYS
   })
 );
@@ -33,6 +35,14 @@ app.use("/api", paperRoutes);
 app.use("/api/results", resultRoutes);
 app.use("/api/discussions", discussionRoutes);
 app.use("/images", express.static("resources/images"));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(FilePath.clientBuildPath());
+  });
+}
+
 app.use(errorHandler);
 
 mongoose
