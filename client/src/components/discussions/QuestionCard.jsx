@@ -32,7 +32,7 @@ const QuestionCard = ({
     );
   }
   return (
-    <div className="card p-2" style={{ background: "#dedede" }}>
+    <div className="card p-2 mb-2" style={{ background: "#dedede" }}>
       <div className="row">
         <div style={{ width: "auto", marginLeft: 10 }}>
           <Votes votes={votes} questionId={id} />

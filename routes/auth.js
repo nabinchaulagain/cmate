@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const passport = require("../config/passport");
-const { getAuthStatus, logout } = require("../controllers/auth");
+const { getAuthStatus, logout, getProfile } = require("../controllers/auth");
 
 // GET => /auth/login
 router.get(
@@ -22,6 +22,10 @@ router.get("/google/cb", passport.authenticate("google"), (req, res) => {
 // GET => /auth/authStatus
 router.get("/getAuthStatus", getAuthStatus);
 
+//GET => /auth/logout
 router.get("/logout", logout);
+
+// controller for GET=>/auth/profile/:userId
+router.get("/profile/:userId", getProfile);
 
 module.exports = router;

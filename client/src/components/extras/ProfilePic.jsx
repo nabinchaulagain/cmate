@@ -51,6 +51,9 @@ const ProfilePic = props => {
             </li>
           )}
           <li>
+            <Link to={`/profile/${props.id}`}>My Profile</Link>
+          </li>
+          <li>
             <a href="/api/auth/logout">Logout</a>
           </li>
         </ul>
@@ -61,12 +64,12 @@ const ProfilePic = props => {
 export const ProfilePicReusable = ({ user, size }) => {
   const currentUser = useSelector(state => state.auth.user);
   return (
-    <React.Fragment>
+    <ProfilePicReusableWrapper user={user}>
       <img
         src={user.profilePic}
         style={{ width: size, height: size, borderRadius: "100%" }}
         alt={user.name}
-        title={`${user.name}(${user.email})`}
+        title={user.email ? `${user.name}(${user.email})` : user.name}
       ></img>
       <span
         className={
@@ -75,8 +78,23 @@ export const ProfilePicReusable = ({ user, size }) => {
       >
         {user.name}{" "}
       </span>
-    </React.Fragment>
+    </ProfilePicReusableWrapper>
   );
 };
 
+const ProfilePicReusableWrapper = ({ user, children }) => {
+  if (user._id) {
+    return (
+      <Link
+        to={`/profile/${user._id}`}
+        className="text-dark"
+        style={{ textDecoration: "none" }}
+      >
+        {children}
+      </Link>
+    );
+  } else {
+    return <React.Fragment>{children}</React.Fragment>;
+  }
+};
 export default ProfilePic;

@@ -55,6 +55,7 @@ const renderAuth = authState => {
         email={authState.user.email}
         username={authState.user.name}
         isAdmin={authState.user.isAdmin}
+        id={authState.user._id}
       />
     );
   } else {
