@@ -13,6 +13,7 @@ import QuizResults from "./quizzes/Results/QuizResult";
 import DiscussionsHome from "./discussions/DiscussionsHome";
 import Homepage from "./Homepage";
 import Profile from "./Profile/Profile";
+import PageNotFound from "./404";
 const Routes = () => {
   const { isLoggedIn, user } = useSelector(state => state.auth);
   return (
@@ -41,6 +42,7 @@ const Routes = () => {
       )}
       <Route path="/discussions" component={DiscussionsHome} exact />
       <Route path="/profile/:id" component={Profile} exact />
+      <Route component={PageNotFound} />
     </React.Fragment>
   );
 };
