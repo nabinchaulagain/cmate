@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Switch } from "react-router-dom";
+// import { Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./Navbar";
@@ -24,9 +24,7 @@ const App = () => {
       {flashMessage.showFlashMessage && (
         <FlashMessage msg={flashMessage.flashMessage} />
       )}
-      <Switch>
-        <Routes />
-      </Switch>
+      <Routes />
     </div>
   );
 };
