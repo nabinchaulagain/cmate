@@ -52,7 +52,7 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB Started");
-    app.listen(4000, () => {
+    app.listen(process.env.PORT || 4000, () => {
       console.log("Server started");
     });
   })
