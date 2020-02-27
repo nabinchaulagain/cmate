@@ -25,7 +25,7 @@ const Routes = () => {
       {getLoginRequiredRoutes(isLoggedIn)}
       <Route path="/discussions" component={DiscussionsHome} exact />
       <Route path="/profile/:id" component={Profile} exact />
-      <Route component={PageNotFound} />
+      {isLoggedIn !== "TBD" && <Route component={PageNotFound} />}
     </Switch>
   );
 };

@@ -93,9 +93,6 @@ const saveEditPaper = async (questions, id, dispatch) => {
   }
   formData.append("questions", JSON.stringify(questionsToSend));
   formData.append("id", id);
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
   await axios.patch("/api/admin/editPaper", formData);
   history.push("/admin");
   flashMessage(dispatch, "Question Paper was Edited");
