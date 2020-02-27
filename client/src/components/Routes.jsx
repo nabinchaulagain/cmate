@@ -32,8 +32,13 @@ const Routes = () => {
 const getLoginRequiredRoutes = isLoggedIn => {
   if (isLoggedIn) {
     return [
-      <Route path="/quiz/:id" component={Quiz} exact />,
-      <Route path="/quizResult/:id" component={QuizResults} exact />
+      <Route path="/quiz/:id" component={Quiz} exact key="quiz_play" />,
+      <Route
+        path="/quizResult/:id"
+        component={QuizResults}
+        exact
+        key="quiz_result"
+      />
     ];
   }
 };
@@ -41,14 +46,30 @@ const getLoginRequiredRoutes = isLoggedIn => {
 const getAdminRoutes = (isLoggedIn, user) => {
   if (isLoggedIn && user && user.isAdmin === true) {
     return [
-      <Route path="/admin" component={Reports} exact />,
-      <Route path="/admin/uploadPaper" component={AddPaper} exact />,
-      <Route path="/admin/editPaper/:id" component={EditPaper} exact />,
-      <Route path="/admin/quizzes" component={QuestionPapers} exact />,
+      <Route path="/admin" component={Reports} exact key="admin_home_route" />,
+      <Route
+        path="/admin/uploadPaper"
+        component={AddPaper}
+        exact
+        key="admin_upload_paper"
+      />,
+      <Route
+        path="/admin/editPaper/:id"
+        component={EditPaper}
+        exact
+        key="admin_edit_paper"
+      />,
+      <Route
+        path="/admin/quizzes"
+        component={QuestionPapers}
+        exact
+        key="admin_quiz_list"
+      />,
       <Route
         path="/admin/resolve/:paperId/:questionNum"
         component={ResolveReports}
         exact
+        key="admin_resolve_report"
       />
     ];
   }
