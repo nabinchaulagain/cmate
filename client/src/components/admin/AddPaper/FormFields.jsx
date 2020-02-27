@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ImageInput from "../../extras/ImageInput";
 import Field from "../../extras/Field";
 import Checkbox from "../../extras/Checkbox";
-const FieldsComp = props => {
-  const [hasImage, setHasImage] = useState(Boolean(props.initialValues.image));
+const FieldsComp = ({ initialValues, errors, setImageInState }) => {
+  const [hasImage, setHasImage] = useState(Boolean(initialValues.image));
   const [hasDirection, setHasDirection] = useState(
-    Boolean(props.initialValues.direction)
+    Boolean(initialValues.direction)
   );
   const [hasDirectionImage, setHasDirectionImage] = useState(
-    Boolean(props.initialValues.directionImage)
+    Boolean(initialValues.directionImage)
   );
-  useEffect(() => {
-    if (!hasImage) {
-      props.setImageInState(null);
-    }
-  }, [hasImage, props]);
   //checkboxes for options for directions and image
   //actual Fields Component
   return (
@@ -25,7 +20,8 @@ const FieldsComp = props => {
         setHasDirection,
         hasDirection,
         hasDirectionImage,
-        setHasDirectionImage
+        setHasDirectionImage,
+        setImageInState
       )}
       {hasDirection && (
         <React.Fragment>
@@ -34,11 +30,8 @@ const FieldsComp = props => {
             name="direction"
             placeholder="Direction Detail"
             className="form-control mt-2 form-field"
-            value={
-              props.initialValues.direction &&
-              props.initialValues.direction.text
-            }
-            error={props.errors.direction}
+            value={initialValues.direction && initialValues.direction.text}
+            error={errors.direction}
           />
           <div className="ml-0 text-left mt-1">
             <label
@@ -52,8 +45,7 @@ const FieldsComp = props => {
               name="direction_upto"
               min="1"
               defaultValue={
-                props.initialValues.direction &&
-                props.initialValues.direction.ending
+                initialValues.direction && initialValues.direction.ending
               }
               max="100"
             />
@@ -65,13 +57,13 @@ const FieldsComp = props => {
         name="question"
         className="form-control mt-2 form-field"
         placeholder="Question"
-        value={props.initialValues.question}
-        error={props.errors.question}
+        value={initialValues.question}
+        error={errors.question}
       />
       {hasImage && (
         <ImageInput
-          setImageInState={props.setImageInState}
-          initialImage={props.initialValues.image}
+          setImageInState={setImageInState}
+          initialImage={initialValues.image}
           name="question_image"
           label="Question Image"
         />
@@ -82,8 +74,7 @@ const FieldsComp = props => {
             label="Direction Image"
             name="direction_image"
             initialImage={
-              props.initialValues.directionImage &&
-              props.initialValues.directionImage.url
+              initialValues.directionImage && initialValues.directionImage.url
             }
           />
           <div className="ml-0 text-left mt-1">
@@ -98,15 +89,15 @@ const FieldsComp = props => {
               name="direction_image_upto"
               min="1"
               defaultValue={
-                props.initialValues.directionImage &&
-                props.initialValues.directionImage.ending
+                initialValues.directionImage &&
+                initialValues.directionImage.ending
               }
               max="100"
             />
           </div>
         </React.Fragment>
       )}
-      {renderOptions(props.initialValues, props.errors)}
+      {renderOptions(initialValues, errors)}
     </div>
   );
 };
@@ -117,12 +108,18 @@ const renderCheckboxes = (
   setHasDirection,
   hasDirection,
   hasDirectionImage,
-  setHasDirectionImage
+  setHasDirectionImage,
+  setImageInState
 ) => {
   return (
     <div className="text-center m-1">
       <Checkbox
-        onClick={() => setHasImage(!hasImage)}
+        onClick={() => {
+          if (hasImage) {
+            setImageInState(null);
+          }
+          setHasImage(!hasImage);
+        }}
         checked={hasImage}
       ></Checkbox>
       <label className="mr-2">Has Image</label>
